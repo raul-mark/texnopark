@@ -1,0 +1,16 @@
+.registerTitle>h2 {
+    font-size: 35px;
+}
+
+.help-block-error {
+    color:#cc0000;
+}
+
+.content-image img {
+    width: 300px !important;
+    height: auto !important;
+}
+
+.contentBoxLessonsList .contentBoxPassedOld {
+    min-height: 300px;
+  }
