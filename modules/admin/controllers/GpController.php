@@ -6,13 +6,14 @@ use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
 use yii\web\UploadedFile;
+use yii\web\Response;
 
 use app\models\user\User;
 use app\models\stock\Stock;
 use app\models\stack\Stack;
 use app\models\stack\StackShelving;
-use app\models\product\Product;
-use app\models\product\ProductSearch;
+use app\models\gp\Gp;
+use app\models\gp\GpSearch;
 use app\models\Category;
 
 class GpController extends Controller{
@@ -44,10 +45,15 @@ class GpController extends Controller{
         return parent::beforeAction($action);
     }
 
-    public function actionIndex() {
-        $searchModel = new ProductSearch();
+    public function actionIndex($type = null) {
+        $searchModel = new GpSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->with('image')->andWhere(['status'=>5]);
+
+        if ($type == 'defect') {
+            $dataProvider->query->with('image')->andWhere(['status'=>2]);
+        } else {
+            $dataProvider->query->with('image')->andWhere(['status'=>1]);
+        }
 
         $dataProvider->setSort([
             'defaultOrder' => [
@@ -55,7 +61,7 @@ class GpController extends Controller{
             ]
         ]);
 
-        $model = new Product;
+        $model = new Gp;
 
         if ($model->load(Yii::$app->request->post()) && ($model->file = UploadedFile::getInstance($model, 'file'))) {
             if ($model->upload()) {
@@ -72,16 +78,16 @@ class GpController extends Controller{
     }
 
     public function actionCreate($id = null) {
-        $model = new Product;
+        $model = new Gp;
         
         if ($id) {
-            $model = Product::find()->with('image')->where(['id'=>$id])->one();
+            $model = Gp::find()->with('image')->where(['id'=>$id])->one();
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->saveObject()) {
-                Yii::$app->session->setFlash('product_saved', 'Товар успешно сохранен');
-                return $this->redirect(['/admin/product/view', 'id'=>$model->id]);
+                Yii::$app->session->setFlash('gp_saved', 'Товар успешно сохранен');
+                return $this->redirect(['/admin/gp/view', 'id'=>$model->id]);
             }
         }
 
@@ -106,7 +112,7 @@ class GpController extends Controller{
     }
 
     public function actionView($id) {
-        $model = Product::find()->with('region', 'unit', 'manufacturer')->where(['id'=>$id])->one();
+        $model = Gp::find()->with('region', 'unit', 'manufacturer')->where(['id'=>$id])->one();
 
         return $this->render('view', [
             'model' => $model
@@ -114,12 +120,12 @@ class GpController extends Controller{
     }
 
     public function actionRemove($id) {
-        $model = Product::findOne($id);
+        $model = Gp::findOne($id);
 
         if ($this->user && ($this->user->role != User::ROLE_USER) && $model && $model->removeObject()) {
-            Yii::$app->session->setFlash('product_removed', 'Товар успешно удален');
+            Yii::$app->session->setFlash('gp_removed', 'Товар успешно удален');
         }
-        return $this->redirect(['/admin/product']);
+        return $this->redirect(['/admin/gp']);
     }
 
     public function actionGetStacks() {

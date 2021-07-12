@@ -10,6 +10,7 @@ class Images extends \yii\db\ActiveRecord {
     const PHOTO_USER_PATH = 'uploads/user/';
     const PHOTO_CATEGORY_PATH = 'uploads/category/';
     const PHOTO_PRODUCT_PATH = 'uploads/product/';
+    const PHOTO_GP_PATH = 'uploads/gp/';
     const PHOTO_DEFAULT = '/assets_files/img/photo.png';
 
     public $imageFiles = [];
@@ -17,7 +18,8 @@ class Images extends \yii\db\ActiveRecord {
     public $object = array(
         'user' => self::PHOTO_USER_PATH,
         'category' => self::PHOTO_CATEGORY_PATH,
-        'product' => self::PHOTO_PRODUCT_PATH
+        'product' => self::PHOTO_PRODUCT_PATH,
+        'gp' => self::PHOTO_GP_PATH
     );
 
     public $image_sizes = array(

@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 use yii\widgets\LinkPager;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Отдел ГП';
+$this->title = 'Товары';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -19,18 +19,20 @@ $this->params['breadcrumbs'][] = $this->title;
         </ol>
     </section>
     <section class="content">
-        <?php if (Yii::$app->session->hasFlash('product_removed')) {?>
+        <?php if (Yii::$app->session->hasFlash('gp_removed')) {?>
             <div class="callout callout-success text-center">
-                <?=Yii::$app->session->getFlash('product_removed');?>
+                <?=Yii::$app->session->getFlash('gp_removed');?>
             </div>
         <?php }?>
         <div class="box box-info color-palette-box">
             <div class="box-header with-border">
                 <div class="box-title pull-right" style="font-size: 14px">
-                    <a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/create'])?>" class="btn btn-primary">
-                        <i class="fa fa-pencil"></i>
-                        Добавить продукт
-                    </a>
+                    <?php if (!Yii::$app->request->get('type')) {?>
+                        <a href="<?=Yii::$app->urlManager->createUrl(['/admin/gp/create'])?>" class="btn btn-primary">
+                            <i class="fa fa-pencil"></i>
+                            Добавить продукт
+                        </a>
+                    <?php }?>
                 </div>
                 <div id="action-links" style="display:none">
                     <a href="javascript:;" class="btn btn-danger" data-value="remove"><i class="fa fa-trash"></i> Удалить</a>
@@ -157,9 +159,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     <span class="fa fa-cog"></span>
                                                 </button>
                                                 <ul class="dropdown-menu pull-right">
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/product/create', 'id'=>$model->id]).'" class="dropdown-item">Редактировать</a></li>
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/product/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</a></li>
+                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/gp/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
+                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/gp/create', 'id'=>$model->id]).'" class="dropdown-item">Редактировать</a></li>
+                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/gp/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</a></li>
                                                 </ul>';
                                     }
                                 ],

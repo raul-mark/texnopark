@@ -1,9 +1,9 @@
 <?php
 
 use app\widgets\admin_language_tab\AdminLanguageTab;
-use app\widgets\admin_product_menu\AdminProductMenu;
+use app\widgets\admin_gp_menu\AdminGpMenu;
 
-$this->title = 'Товар ГП';
+$this->title = 'Товар';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -17,14 +17,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </ol>
     </section>
     <section class="content">
-        <?php if (Yii::$app->session->hasFlash('product_saved')) {?>
+        <?php if (Yii::$app->session->hasFlash('gp_saved')) {?>
             <div class="alert alert-success text-center">
-                <?=Yii::$app->session->getFlash('product_saved');?>
+                <?=Yii::$app->session->getFlash('gp_saved');?>
             </div>
         <?php }?>
         <div class="row">
             <div class="col-sm-3">
-                <?=AdminProductMenu::widget();?>
+                <?=AdminGpMenu::widget();?>
             </div>
             <div class="col-sm-9">
                 <?php if ($model) {?>
@@ -34,9 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <span class="fa fa-cog"></span>
                             </button>
                             <ul class="dropdown-menu pull-right">
-                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/create']);?>" class="dropdown-item">Добавить товар</a></li>
-                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/create', 'id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
-                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/remove', 'id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
+                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/gp/create']);?>" class="dropdown-item">Добавить товар</a></li>
+                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/gp/create', 'id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
+                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/gp/remove', 'id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
                             </ul>
                         </div>
                         <div class="box-body">
@@ -70,9 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <td>
                                         <?php
                                             if ($model->status == 1) {
-                                                echo '<small class="badge badge-success">Активный</small>';
+                                                echo '<span class="label label-success">Активный</span>';
                                             } else {
-                                                echo '<small class="badge badge-danger">Заблокирован</small>';
+                                                echo '<span class="label label-danger">Заблокирован</span>';
                                             }
                                         ?>
                                     </td>
@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </tr>
                                 <tr>
                                     <td>Производитель:</td>
-                                    <td><?=$model->manufacturer ? $model->manufacturer->name_ru : '-';?></td>
+                                    <td><?=$model->manufacturer_id ? $model->manufacturer->name_ru : '-';?></td>
                                 </tr>
                                 <tr>
                                     <td>Еденица измерения:</td>

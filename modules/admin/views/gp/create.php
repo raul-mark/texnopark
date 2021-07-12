@@ -5,7 +5,7 @@ use yii\bootstrap\ActiveForm;
 use kartik\select2\Select2;
 use mihaildev\ckeditor\CKEditor;
 
-$this->title = 'Сохранить товар в ГП';
+$this->title = 'Сохранить товар';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Номер этажа</label>
-                                <select name="Product[stack_id]" class="form-control select-drop-stack" style="margin-top">
+                                <select name="Gp[stack_id]" class="form-control select-drop-stack" style="margin-top">
                                     <option value="">Выбрать этаж</option>
                                     <?php foreach ($stacks as $stack) {?>
                                         <option value="<?=$stack->id;?>"><?=$stack->stack_number;?></option>
@@ -103,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Номер ячейки</label>
-                                <select name="Product[shelf_id]" class="form-control select-drop-stack" style="margin-top">
+                                <select name="Gp[shelf_id]" class="form-control select-drop-stack" style="margin-top">
                                     <option value="">Выбрать ячейку</option>
                                     <?php foreach ($shelvings as $shelf) {?>
                                         <option value="<?=$shelf->id;?>"><?=$shelf->stack_number;?></option>
