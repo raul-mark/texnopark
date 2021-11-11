@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if ($model) {?>
                 <div class="card-header">
                     <div class="pull-right">
-                        <a href="<?=Yii::$app->urlManager->createUrl(['/admin/feedback/remove', 'id'=>$model->id]);?>" class="btn btn-danger remove-object">
+                        <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/feedback/remove', 'id'=>$model->id]);?>" class="btn btn-danger remove-object">
                             <i class="fas fa-trash"></i> Удалить
                         </a>
                     </div>
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                         <tr>
                             <td>Пользователь</td>
-                            <td><?=$model->user ? '<a href="'.Yii::$app->urlManager->createUrl(['/admin/user/view', 'id'=>$model->user->id]).'">'.$model->user->name.'</a>' : 'Не зарегистрирован';?></td>
+                            <td><?=$model->user ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/user/view', 'id'=>$model->user->id]).'">'.$model->user->name.'</a>' : 'Не зарегистрирован';?></td>
                         </tr>
                         <tr>
                             <td>E-mail</td>

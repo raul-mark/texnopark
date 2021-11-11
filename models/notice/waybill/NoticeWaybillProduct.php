@@ -4,6 +4,7 @@ namespace app\models\notice\waybill;
 
 use Yii;
 use app\models\product\Product;
+use app\models\Category;
 
 /**
  * This is the model class for table "notice_waybill_product".
@@ -35,7 +36,7 @@ class NoticeWaybillProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['notice_waybill_id', 'product_id', 'sort', 'status'], 'integer'],
+            [['notice_waybill_id', 'product_id', 'unit_id', 'sort', 'status'], 'integer'],
             [['amount'], 'number'],
             [['description'], 'string'],
             [['date'], 'safe'],
@@ -78,5 +79,10 @@ class NoticeWaybillProduct extends \yii\db\ActiveRecord
     public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    public function getUnit()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'unit_id']);
     }
 }

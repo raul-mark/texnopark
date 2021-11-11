@@ -46,28 +46,28 @@ class ShipmentController extends Controller{
     }
 
     public function actionIndex() {
-        // $searchModel = new ShipmentSearch();
-        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new ShipmentSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        // $dataProvider->setSort([
-        //     'defaultOrder' => [
-        //         'id' => 'desc'
-        //     ]
-        // ]);
+        $dataProvider->setSort([
+            'defaultOrder' => [
+                'id' => 'desc'
+            ]
+        ]);
 
-        // $model = new Shipment;
+        $model = new Shipment;
 
-        // if ($model->load(Yii::$app->request->post()) && ($model->file = UploadedFile::getInstance($model, 'file'))) {
-        //     if ($model->upload()) {
-        //         Yii::$app->session->setFlash('uploaded', 'Медикаменты успешно загружены');
-        //         return $this->redirect(Yii::$app->request->referrer);
-        //     }
-        // }
+        if ($model->load(Yii::$app->request->post()) && ($model->file = UploadedFile::getInstance($model, 'file'))) {
+            if ($model->upload()) {
+                Yii::$app->session->setFlash('uploaded', 'Данные успешно загружены');
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
 
         return $this->render('index', [
-            // 'searchModel' => $searchModel,
-            // 'dataProvider' => $dataProvider,
-            // 'model' => $model
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'model' => $model
         ]);
     }
 
@@ -87,14 +87,12 @@ class ShipmentController extends Controller{
         }
 
         $products = ArrayHelper::map(Product::find()->all(), 'id', 'name_ru');
-        $types = ArrayHelper::map(Category::find()->where(['type'=>'shipment'])->all(), 'id', 'name_ru');
-        $agents = ArrayHelper::map(Agent::find()->all(), 'id', 'name');
+        $articles = ArrayHelper::map(Product::find()->all(), 'id', 'article');
 
         return $this->render('create', [
             'model' => $model,
             'products' => $products,
-            'types' => $types,
-            'agents' => $agents
+            'articles' => $articles
         ]);
     }
 

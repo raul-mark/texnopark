@@ -13,7 +13,7 @@ $this->title = 'Админ панель';
         <h1><?=$this->title;?></h1>
 
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>

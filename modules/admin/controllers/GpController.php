@@ -14,6 +14,10 @@ use app\models\stack\Stack;
 use app\models\stack\StackShelving;
 use app\models\gp\Gp;
 use app\models\gp\GpSearch;
+use app\models\gp\DepartmentGp;
+use app\models\gp\DepartmentForming;
+use app\models\gp\DepartmentPlastic;
+use app\models\gp\DepartmentRegulator;
 use app\models\Category;
 
 class GpController extends Controller{
@@ -65,7 +69,7 @@ class GpController extends Controller{
 
         if ($model->load(Yii::$app->request->post()) && ($model->file = UploadedFile::getInstance($model, 'file'))) {
             if ($model->upload()) {
-                Yii::$app->session->setFlash('uploaded', 'Медикаменты успешно загружены');
+                Yii::$app->session->setFlash('uploaded', 'Товары успешно загружены');
                 return $this->redirect(Yii::$app->request->referrer);
             }
         }
@@ -77,10 +81,10 @@ class GpController extends Controller{
         ]);
     }
 
-    public function actionCreate($id = null) {
+    public function actionCreate($id = null, $department_id = null, $type = null) {
         $model = new Gp;
         
-        if ($id) {
+        if ($id && !$department_id) {
             $model = Gp::find()->with('image')->where(['id'=>$id])->one();
         }
 
@@ -99,6 +103,16 @@ class GpController extends Controller{
         $shelvings = ArrayHelper::map(StackShelving::find()->all(), 'id', 'shelf_number');
         $categories = ArrayHelper::map(Category::find()->where(['type'=>'category'])->all(), 'id', 'name_ru');
 
+        $industry = null;
+        if ($type) {
+            switch($type) {
+                case 'b_department_forming' : $industry = DepartmentForming::findOne(['id'=>$id]); break;
+                case 'b_department_regulator' : $industry = DepartmentRegulator::findOne(['id'=>$id]); break;
+                case 'b_department_plastic' : $industry = DepartmentPlastic::findOne(['id'=>$id]); break;
+                case 'b_department_gp' : $industry = DepartmentGp::findOne(['id'=>$id]); break;
+            }
+        }
+
         return $this->render('create', [
             'model' => $model,
             'regions' => $regions,
@@ -107,7 +121,9 @@ class GpController extends Controller{
             'stocks' => $stocks,
             'stacks' => $stacks,
             'shelvings' => $shelvings,
-            'categories' => $categories
+            'categories' => $categories,
+            'industry' => $industry,
+            'type' => $type
         ]);
     }
 

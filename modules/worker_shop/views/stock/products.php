@@ -15,18 +15,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
     <section class="content">
         <?php if ($stock) {?>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Склад
                 </div>
                 <div class="box-body">
-                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/view', 'id'=>$stock->id])?>">
+                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/view', 'id'=>$stock->id])?>">
                         
                         <?=$stock->name_ru;?>
                     </a>
@@ -39,11 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         <?php }?>
-        <div class="box">
+        <div class="box box-info color-palette-box">
             <div class="box-header">
                 <?=$this->title;?>
             </div>
-            <div class="box-body">
+            <div class="box-body" style="overflow-x: scroll;">
                 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -174,7 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     <span class="fa fa-cog"></span>
                                                 </button>
                                                 <ul class="dropdown-menu pull-right">
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
+                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
                                                 </ul>';
                                     }
                                 ],

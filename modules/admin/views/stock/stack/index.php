@@ -28,11 +28,11 @@ $id = Yii::$app->request->get('id');
                 <?=Yii::$app->session->getFlash('stack_removed');?>
             </div>
         <?php }?>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-sm-3">
                 <?=AdminStockMenu::widget();?>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9"> -->
                 <?php if ($stacks) {?>
                     <div class="row">
                         <?php foreach ($stacks as $stack) {?>
@@ -45,9 +45,18 @@ $id = Yii::$app->request->get('id');
                                         <div class="sparkline" data-type="pie" data-offset="90" data-width="200px" data-height="200px">
                                             <?php if ($stack->stackShelvings) {?>
                                                 <?php foreach ($stack->stackShelvings as $shelf) {?>
-                                                    <?=count($shelf->products).',';?>
+                                                    <?php $total = 0;?>
+                                                    <?php if ($shelf->products) {?>
+                                                        <?php foreach ($shelf->products as $pr) {?>
+                                                            <?php $total += $pr->amount;?>
+                                                        <?php }?>
+                                                    <?php }?>
+                                                    <?=$total.',';?>
                                                 <?php }?>
                                             <?php } ?>
+                                            <?php if (!$stack->products) {?>
+                                                1
+                                            <?php }?>
                                             <?php $taken = 100 - count($stack->products);?>
                                             <?php $taken = round($taken);?>
                                         </div>
@@ -93,7 +102,7 @@ $id = Yii::$app->request->get('id');
                             <a href="javascript:;" class="btn btn-success" data-value="enable"><i class="fa fa-unlock"></i> Разблокировать</a>
                         </div>
                     </div>
-                    <div class="box-body" id="item-block">
+                    <div class="box-body" id="item-block" style="overflow-x: scroll;">
                         <?php Pjax::begin(); ?>
                             <?= GridView::widget([
                                 'dataProvider' => $dataProvider,
@@ -184,8 +193,8 @@ $id = Yii::$app->request->get('id');
                         <?php Pjax::end(); ?>
                     </div>
                 </div>
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
     </section>
 </div>
 

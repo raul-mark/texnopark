@@ -7,6 +7,7 @@ use app\models\user\User;
 use app\models\product\Product;
 use app\models\Category;
 use app\models\notice\control\NoticeControl;
+use app\models\Notification;
 
 /**
  * This is the model class for table "notice_act".
@@ -74,9 +75,18 @@ class NoticeAct extends \yii\db\ActiveRecord
         $this->status = 1;
 
         if ($this->save()) {
+            $notification = new Notification;
+            $notification->user_id = Yii::$app->user->identity->id;
+            $notification->object_id = $this->id;
+            $notification->status = 0;
+            $notification->status_admin = 0;
+            $notification->message = 'Новая заявка от раздела: акт приемки';
+            $notification->type = 'notice_finish';
+            $notification->save();
+
             NoticeActProduct::deleteAll(['notice_act_id'=>$this->id]);
             
-            $keys = array('notice_act_id', 'product_id', 'amount', 'description', 'status', 'stock_id', 'stack_id', 'shelf_id', 'weight');
+            $keys = array('notice_act_id', 'product_id', 'unit_id', 'amount', 'description', 'status', 'stock_id', 'stack_id', 'shelf_id', 'weight');
             $vals = array();
 
             foreach ($this->products['product'] as $k => $product) {
@@ -84,6 +94,7 @@ class NoticeAct extends \yii\db\ActiveRecord
                     $vals[] = [
                         'notice_act_id' => $this->id,
                         'product_id' => $this->products['product'][$k],
+                        'unit_id' => $this->products['unit'][$k],
                         'amount' => $this->products['amount'][$k],
                         'description' => $this->products['description'][$k],
                         'status' => 1,
@@ -94,6 +105,11 @@ class NoticeAct extends \yii\db\ActiveRecord
                     ];
 
                     $product = Product::findOne($this->products['product'][$k]);
+
+                    if (!$product) {
+                        $product = new Product;
+                    }
+
                     $product->amount = $product->amount+$this->products['amount'][$k];
                     $product->stock_id = $this->products['stock_id'][$k];
                     $product->stack_id = $this->products['stack_id'][$k];

@@ -18,7 +18,7 @@ class NoticeWaybillProductSearch extends NoticeWaybillProduct
     public function rules()
     {
         return [
-            [['id', 'notice_waybill_id', 'product_id', 'sort', 'status'], 'integer'],
+            [['id', 'notice_waybill_id', 'unit_id', 'product_id', 'sort', 'status'], 'integer'],
             [['amount'], 'number'],
             [['date'], 'safe'],
             [['description'], 'string'],

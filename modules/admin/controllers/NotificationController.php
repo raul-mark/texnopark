@@ -44,7 +44,7 @@ class NotificationController extends Controller{
 	public function actionIndex(){
 	    $model = new Notification;
 
-	    $alerts = $model->find()->with();
+	    $alerts = $model->find()->where(['status_admin'=>0]);
 
 	    $count = $alerts->count();
 	    $pagination = new Pagination([

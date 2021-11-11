@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 use yii\widgets\LinkPager;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Склад';
+$this->title = 'Ряды';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -32,105 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         Добавить ряд
                     </a>
                 </div>
-                <div id="action-links" style="display:none">
-                    <a href="javascript:;" class="btn btn-danger" data-value="remove"><i class="fa fa-trash"></i> Удалить</a>
-                    <a href="javascript:;" class="btn btn-warning" data-value="disable"><i class="fa fa-lock"></i> Заблокировать</a>
-                    <a href="javascript:;" class="btn btn-success" data-value="enable"><i class="fa fa-unlock"></i> Разблокировать</a>
-                </div>
-            </div>
-            <div class="box-body" id="item-block">
-                <!-- <?= GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'summary' => "Страница {begin} - {end} из {totalCount} складов<br/><br/>",
-                    'emptyText' => 'Складов нет',
-                    'pager' => [
-                        'options'=>['class'=>'pagination'],
-                        'pageCssClass' => 'page-item',
-                        'prevPageLabel' => 'Назад',
-                        'nextPageLabel' => 'Вперед',
-                        'maxButtonCount'=>10,
-                        'linkOptions' => [
-                            'class' => 'page-link'
-                        ]
-                        ],
-                    'tableOptions' => [
-                        'class'=>'table table-striped'
-                    ],
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                        [
-                            'class' => 'yii\grid\CheckboxColumn'
-                        ],
-                        [
-                            'attribute'=>'id',
-                            'label'=>'<i class="fa fa-sort"></i> ID',
-                            'encodeLabel' => false,
-                            'contentOptions' => [
-                                'style' => 'width:70px'
-                            ],
-                        ],
-                        [
-                            'attribute'=>'name_ru',
-                            'label'=>'<i class="fa fa-sort"></i> Название',
-                            'encodeLabel' => false,
-                        ],
-                        [
-                            'attribute'=>'login',
-                            'label'=>'<i class="fa fa-sort"></i> Логин',
-                            'encodeLabel' => false,
-                            'value' => function ($model, $key, $index, $column) {
-                                return $model->user ? $model->user->login : '-';
-                            },
-                        ],
-                        [
-                            'attribute'=>'code',
-                            'label'=>'<i class="fa fa-sort"></i> Код',
-                            'encodeLabel' => false,
-                        ],
-                        
-                        [
-                            'attribute'=>'status',
-                            'label'=>'<i class="fa fa-sort"></i> Статус',
-                            'encodeLabel' => false,
-                            'format' => 'html',
-                            'contentOptions' => [
-                                'style' => 'width:100px'
-                            ],
-                            'value' => function ($model, $key, $index, $column) {
-                                if ($model->status == 1) {
-                                    return '<small class="label label-success">Активный</small>';
-                                } else {
-                                    return '<small class="label label-danger">Заблокирован</small>';
-                                }
-                            },
-                        ],
-                        [
-                            'attribute'=>'date',
-                            'label'=>'<i class="fa fa-sort"></i> Дата',
-                            'encodeLabel' => false,
-                            'value' => function ($model, $key, $index, $column) {
-                                return $model->date;
-                            },
-                        ],
-                        [
-                            'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view}',
-                            'buttons' => [
-                                'view' => function ($url, $model) {
-                                    return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                <span class="fa fa-cog"></span>
-                                            </button>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/stock/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</li>
-                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/stock/create', 'id'=>$model->id]).'" class="dropdown-item">Редактировать</li>
-                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/stock/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</li>
-                                            </ul>';
-                                }
-                            ],
-                        ]
-                    ],
-                ]); ?> -->
             </div>
         </div>
         <?php if ($stocks) {?>
@@ -143,17 +44,46 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <div class="box-body text-center">
                                 <div class="sparkline" data-type="pie" data-offset="90" data-width="200px" data-height="200px">
-                                    <?php $taken = 100 - count($stock->products);?>
-                                    <?=round($taken);?>, <?=100 - $taken;?>
+                                    <?php if ($stock->stacks) {?>
+                                        <?php foreach ($stock->stacks as $k => $stack) {?>
+                                            <?php $total = 0;?>
+                                            <?php if ($stack->products) {?>
+                                                <?php foreach ($stack->products as $pr) {?>
+                                                    <?php $total += $pr->amount;?>
+                                                <?php }?>
+                                            <?php }?>
+                                            <?=$total.',';?>
+                                        <?php }?>
+                                    <?php } ?>
+                                    <?php if (!$stock->products) {?>
+                                        1
+                                    <?php }?>
+                                    <?php $taken = round(100 - count($stock->products));?>
                                 </div>
                                 <hr/>
-                                <div class="text-left">
-                                    <div style="width:20px; height:20px; background-color:blue; float:left"></div> <span style="margin-left:10px">Свободно: <?=round($taken);?>%</span>
-                                    <div style="margin-top:10px"><div style="width:20px; height:20px; background-color:red; float:left;"></div> <span style="margin-left:10px">Занято: <?=100 - $taken;?>%</span></div>
-                                </div>
+                                <table class="table">
+                                    <tr>
+                                        <td align="left">Свободно:</td>
+                                        <td><span class="label label-success"><?=$taken;?>%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Занято:</td>
+                                        <td><span class="label label-success"><?=100 - $taken;?>%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Кол-во полок:</td>
+                                        <td><span class="label label-success"><?=count($stock->stacks);?></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Кол-во продуктов:</td>
+                                        <td><span class="label label-success"><?=count($stock->products);?></span></td>
+                                    </tr>
+                                </table>
                             </div>
                             <div class="box-footer">
                                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/stock/stacks', 'id'=>$stock->id]);?>" class="btn btn-info" style="width:100%">Посмотреть</a>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/stock/create', 'id'=>$stock->id]);?>" class="btn btn-warning" style="width:100%; margin-top:5px">Редактировать</a>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/stock/remove', 'id'=>$stock->id]);?>" class="btn btn-danger" style="width:100%; margin-top:5px">Удалить</a>
                             </div>
                         </div>
                     </div>

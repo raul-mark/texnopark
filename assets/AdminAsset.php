@@ -29,6 +29,7 @@ class AdminAsset extends AssetBundle
         '/admin_files/plugins/iCheck/square/blue.css',
         '/admin_files/css/nestable.css',
         '/admin_files/css/style.css',
+        '/admin_files/plugins/bootstrap-slider/slider.css',
         '/plugins/file-uploader/css/jquery.fileuploader.css',
         '/plugins/file-uploader/css/jquery.fileuploader-theme-thumbnails.css',
         '/plugins/datepicker/jquery.datetimepicker.css',
@@ -37,6 +38,8 @@ class AdminAsset extends AssetBundle
     public $js = [
         '/admin_files/bower_components/bootstrap/dist/js/bootstrap.min.js',
         '/admin_files/bower_components/fastclick/lib/fastclick.js',
+        '/admin_files/bower_components/chart.js/Chart.js',
+        '/admin_files/plugins/bootstrap-slider/bootstrap-slider.js',
         '/admin_files/js/adminlte.min.js',
         '/admin_files/js/demo.js',
         '/admin_files/js/nestable.js',

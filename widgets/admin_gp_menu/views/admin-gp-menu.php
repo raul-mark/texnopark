@@ -9,7 +9,7 @@ use app\models\user\User;
 ?>
 
 <?php if (($user->role == User::ROLE_ADMIN) || ($user->role == User::ROLE_MODERATOR)) {?>
-    <div class="box">
+    <div class="box box-info color-palette-box">
         <div class="box-body">
             <div class="text-center">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/gp/view', 'id'=>$model->id])?>">
@@ -25,7 +25,7 @@ use app\models\user\User;
 <?php }?>
 
 <?php if ($user->role == User::ROLE_WORKER) {?>
-    <div class="box">
+    <div class="box box-info color-palette-box">
         <div class="box-body">
             <div class="text-center">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/worker/gp/view', 'id'=>$model->id])?>">

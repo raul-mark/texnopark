@@ -12,14 +12,14 @@ use app\models\notice\control\NoticeControl;
  */
 class NoticeControlSearch extends NoticeControl
 {
-    public $truck_number, $truck_number_reg, $invoice_number, $provider_id, $article, $description, $date_notice;
+    public $truck_number, $truck_number_reg, $invoice_number, $provider_id, $article, $description, $date_notice, $notice_number;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'user_id', 'notice_truck_id', 'sort', 'status'], 'integer'],
+            [['id', 'user_id', 'notice_truck_id', 'sort', 'status', 'notice_number'], 'integer'],
             [['date_notice', 'description', 'date', 'description', 'date', 'date_notice', 'truck_number', 'truck_number_reg', 'invoice_number', 'provider_id', 'article'], 'safe'],
         ];
     }
@@ -75,7 +75,8 @@ class NoticeControlSearch extends NoticeControl
             ->andFilterWhere(['like', 'truck_number', $this->truck_number])
             ->andFilterWhere(['like', 'truck_number_reg', $this->truck_number_reg])
             ->andFilterWhere(['like', 'invoice_number', $this->invoice_number])
-            ->andFilterWhere(['like', 'article', $this->article]);
+            ->andFilterWhere(['like', 'article', $this->article])
+            ->andFilterWhere(['like', 'notice_number', $this->notice_number]);
 
         return $dataProvider;
     }

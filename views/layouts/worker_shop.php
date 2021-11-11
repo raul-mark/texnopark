@@ -65,8 +65,10 @@ if (!$currency) {
         <?php if (($controller != 'default') || (($controller == 'default') && ($action != 'index'))) {?>
             <header class="main-header">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/'])?>" class="logo">
-                    <span class="logo-mini"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
-                    <span class="logo-lg"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
+                    <!-- <span class="logo-mini"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
+                    <span class="logo-lg"><img src="/assets_files/img/texno_logo.png" width="50"/></span> -->
+                    <span class="logo-mini"><b>T</b>P</span>
+                    <span class="logo-lg"><b>TEXNO</b>PARK</span>
                 </a>
                 <nav class="navbar navbar-static-top">
                     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -79,10 +81,10 @@ if (!$currency) {
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
                             <li class="dropdown notifications-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell-o"></i>
                                     <span class="label label-warning"><?=($notifications && count($notifications) > 0) ? count($notifications) : '';?></span>
-                                </a>
+                                </a> -->
                                 <?php if ($notifications) {?>
                                     <ul class="dropdown-menu">
                                         <li class="header">У вас <?=count($notifications);?> уведомлений</li>
@@ -155,7 +157,6 @@ if (!$currency) {
                             </a>
                         </li>
 
-                        
                         <li <?=($controller == 'stock') ? 'class="active"' : '';?>>
                             <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock'])?>">
                                 <i class="fa fa-archive"></i> <span>Склад</span>
@@ -164,19 +165,34 @@ if (!$currency) {
                                 </span>
                             </a>
                         </li>
-                    
+
+                        <!-- <li <?=($controller == 'notice-shop') ? 'class="active"' : '';?>>
+                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/notice-shop'])?>">
+                                <i class="fa fa-file"></i> <span>Заявки (Для склада)</span>
+                            </a>
+                        </li> -->
+
+                        <li <?=($controller == 'shipment') ? 'class="active"' : '';?>>
+                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/shipment'])?>">
+                                <i class="fa fa-file"></i> <span>Заявки (Отгрузка)</span>
+                                <span class="pull-right-container">
+                                    <small class="label pull-right bg-<?=($shipments > 0) ? 'green' : 'red'?>"><?=$shipments;?></small>
+                                </span>
+                            </a>
+                        </li>
+
                         <li <?=($controller == 'shop') ? 'class="active"' : '';?>>
-                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/shop'])?>">
+                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/shop/stacks'])?>">
                                 <i class="fa fa-shopping-cart"></i> <span>Магазин</span>
                             </a>
                         </li>
-                    
+
                         <li <?=($controller == 'gp') ? 'class="active"' : '';?>>
                             <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/gp'])?>">
                                 <i class="fa fa-star"></i> <span>Отдел ГП</span>
                             </a>
                         </li>
-                    
+
                         <li class="treeview<?=($controller == 'product') ? ' active' : '';?>">
                             <a href="#">
                                 <i class="fa fa-laptop"></i> <span>Продукция</span>
@@ -189,7 +205,7 @@ if (!$currency) {
                                 <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/', 'type'=>'defect'])?>"><i class="fa fa-circle-o"></i> Дефектная продукция</a></li>
                             </ul>
                         </li>
-                        
+
                         <li>
                             <a href="<?=Yii::$app->urlManager->createUrl(['/main/log-out'])?>">
                                 <i class="fa fa-sign-out"></i>

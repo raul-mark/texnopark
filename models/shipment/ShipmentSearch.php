@@ -18,7 +18,7 @@ class ShipmentSearch extends Shipment
     public function rules()
     {
         return [
-            [['id', 'status', 'agent_id', 'type_id', 'sort'], 'integer'],
+            [['id', 'status', 'sort'], 'integer'],
             [['date_shipment', 'fio', 'comment', 'date'], 'safe'],
         ];
     }

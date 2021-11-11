@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="alert alert-success text-center alert-bottom"><?=Yii::$app->session->getFlash('photo_removed');?></div>
         <?php }?>
         <?php $form = ActiveForm::begin(); ?>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Личные данные
                 </div>
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Фото (Аватар)
                 </div>

@@ -11,6 +11,7 @@ use app\models\user\User;
 use app\models\Notification;
 use app\models\Category;
 use app\models\shipment\Shipment;
+use app\models\notice_shop_stock\NoticeShopStock;
 use app\models\Settings;
 
 AdminAsset::register($this);
@@ -21,7 +22,7 @@ $action = Yii::$app->controller->action->id;
 $user = null;
 if (!Yii::$app->user->isGuest) {
     $user = User::find()->with('image', 'moderatorAccess', 'moderatorAccess.moderator')->where(['id'=>Yii::$app->user->identity->id])->one();
-    $notifications = Notification::find()->where(['user_id'=>$user->id, 'status'=>0])->all();
+    $notifications = Notification::find()->where(['status_admin'=>0])->all();
 }
 
 $accesses = array();
@@ -35,6 +36,7 @@ if ($user && $user->moderatorAccess) {
 }
 
 $shipments = Shipment::find()->where(['status'=>0])->count();
+$notice_shop = NoticeShopStock::find()->where(['status'=>0])->count();
 
 $currency = Settings::findOne(['type'=>'currency']);
 if (!$currency) {
@@ -59,8 +61,10 @@ if (!$currency) {
         <?php if (($controller != 'default') || (($controller == 'default') && ($action != 'index'))) {?>
             <header class="main-header">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/'])?>" class="logo">
-                    <span class="logo-mini"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
-                    <span class="logo-lg"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
+                    <!-- <span class="logo-mini"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
+                    <span class="logo-lg"><img src="/assets_files/img/texno_logo.png" width="50"/></span> -->
+                    <span class="logo-mini"><b>T</b>P</span>
+                    <span class="logo-lg"><b>TEXNO</b>PARK</span>
                 </a>
                 <nav class="navbar navbar-static-top">
                     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -73,7 +77,7 @@ if (!$currency) {
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
                             <li class="dropdown notifications-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/notification']);?>">
                                     <i class="fa fa-bell-o"></i>
                                     <span class="label label-warning"><?=($notifications && count($notifications) > 0) ? count($notifications) : '';?></span>
                                 </a>
@@ -152,7 +156,7 @@ if (!$currency) {
                         <?php if ($user && (($user->role == User::ROLE_ADMIN) || in_array('stock', $accesses))) {?>
                             <li <?=($controller == 'stock') ? 'class="active"' : '';?>>
                                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/stock'])?>">
-                                    <i class="fa fa-archive"></i> <span>Склад</span>
+                                    <i class="fa fa-archive"></i> <span>Ряды</span>
                                     <span class="pull-right-container">
                                         <small class="label pull-right bg-<?=($stock_count > 0) ? 'green' : 'red'?>"><?=$stock_count;?></small>
                                     </span>
@@ -162,8 +166,36 @@ if (!$currency) {
 
                         <?php if ($user && (($user->role == User::ROLE_ADMIN) || in_array('shop', $accesses))) {?>
                             <li <?=($controller == 'shop') ? 'class="active"' : '';?>>
-                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/shop'])?>">
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/shop/stacks'])?>">
                                     <i class="fa fa-shopping-cart"></i> <span>Магазин</span>
+                                    <span class="pull-right-container">
+                                        <small class="label pull-right bg-red"><?=$shipments;?></small>
+                                    </span>
+                                </a>
+                            </li>
+                        <?php }?>
+
+                        <?php if ($user && ($user->role == User::ROLE_ADMIN) || in_array('product', $accesses)) {?>
+                            <li <?=(($controller == 'product') && !Yii::$app->request->get('type')) ? 'class="active"' : '';?>>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/product'])?>">
+                                    <i class="fa fa-laptop"></i> <span>Продукция</span>
+                                </a>
+                            </li>
+                        <?php }?>
+
+                        <?php if($user && (($user->role == User::ROLE_ADMIN))) {?>
+                            <li <?=($controller == 'notice') ? 'class="active"' : '';?>>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/notice'])?>">
+                                    <i class="fa fa-check"></i> <span>Заявки (формы)</span>
+                                </a>
+                            </li>
+                        <?php }?>
+
+                        <?php if($user && (($user->role == User::ROLE_ADMIN))) {?>
+                            <li <?=($controller == 'shipment') ? 'class="active"' : '';?>>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/shipment'])?>">
+                                    <i class="fa fa-arrow-left"></i>
+                                    <span>Заявки на отгрузку</span>
                                 </a>
                             </li>
                         <?php }?>
@@ -172,6 +204,14 @@ if (!$currency) {
                             <li <?=($controller == 'gp') ? 'class="active"' : '';?>>
                                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/gp'])?>">
                                     <i class="fa fa-star"></i> <span>Отдел ГП</span>
+                                </a>
+                            </li>
+                        <?php }?>
+
+                        <?php if ($user && ($user->role == User::ROLE_ADMIN) || in_array('product?type=defect', $accesses)) {?>
+                            <li <?=(($controller == 'product') && (Yii::$app->request->get('type') == 'defect')) ? 'class="active"' : '';?>>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/product', 'type'=>'defect'])?>">
+                                    <i class="fa fa-remove"></i> <span>Дефектная продукция</span>
                                 </a>
                             </li>
                         <?php }?>
@@ -190,25 +230,6 @@ if (!$currency) {
                                     <?php }?>
                                     <?php if ($user->role == User::ROLE_ADMIN || in_array('worker-shop', $accesses)) {?>
                                         <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/worker-shop/'])?>"><i class="fa fa-circle-o"></i> Магазин</a></li>
-                                    <?php }?>
-                                </ul>
-                            </li>
-                        <?php }?>
-
-                        <?php if ($user && (($user->role == User::ROLE_ADMIN) || in_array('product', $accesses) || in_array('product?type=defect', $accesses) || in_array('category?type=news', $accesses) || in_array('category?type=page', $accesses) || in_array('category?type=payment_type', $accesses) || in_array('category?type=delivery_type', $accesses) || in_array('color', $accesses) || in_array('size?type=cloth', $accesses) || in_array('size?type=type_shoes', $accesses))) {?>
-                            <li class="treeview<?=($controller == 'product') ? ' active' : '';?>">
-                                <a href="#">
-                                    <i class="fa fa-laptop"></i> <span>Продукция</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <?php if ($user->role == User::ROLE_ADMIN || in_array('product', $accesses)) {?>
-                                        <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/'])?>"><i class="fa fa-circle-o"></i> Список</a></li>
-                                    <?php }?>
-                                    <?php if ($user->role == User::ROLE_ADMIN || in_array('product?type=defect', $accesses)) {?>
-                                        <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/', 'type'=>'defect'])?>"><i class="fa fa-circle-o"></i> Дефектная продукция</a></li>
                                     <?php }?>
                                 </ul>
                             </li>
@@ -235,9 +256,7 @@ if (!$currency) {
                                     <?php if ($user->role == User::ROLE_ADMIN || in_array('category?type=manufacturer', $accesses)) {?>
                                         <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/category/', 'type'=>'manufacturer'])?>"><i class="fa fa-circle-o"></i> Производители</a></li>
                                     <?php }?>
-                                    <?php if ($user->role == User::ROLE_ADMIN || in_array('category?type=worker', $accesses)) {?>
-                                        <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/category/', 'type'=>'worker'])?>"><i class="fa fa-circle-o"></i> Сотрудники</a></li>
-                                    <?php }?>
+                                    
                                     <?php if ($user->role == User::ROLE_ADMIN || in_array('category?type=defect', $accesses)) {?>
                                         <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/category/', 'type'=>'defect'])?>"><i class="fa fa-circle-o"></i> Виды дефектов</a></li>
                                     <?php }?>
@@ -264,14 +283,6 @@ if (!$currency) {
                                 </ul>
                             </li>
                         <?php }?> -->
-
-                        <?php if($user && (($user->role == User::ROLE_ADMIN))) {?>
-                            <li <?=($controller == 'shipment') ? 'class="active"' : '';?>>
-                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/shipment'])?>">
-                                    <i class="fa fa-arrow-left"></i> <span>Заявки на отгрузку</span>
-                                </a>
-                            </li>
-                        <?php }?>
 
                         <?php if($user && (($user->role == User::ROLE_ADMIN))) {?>
                             <li <?=($controller == 'report') ? 'class="active"' : '';?>>

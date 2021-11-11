@@ -14,6 +14,9 @@ use app\models\stack\Stack;
 use app\models\stack\StackShelving;
 use app\models\product\Product;
 use app\models\product\ProductSearch;
+use app\models\shop\ShopStack;
+use app\models\shop\ShopStackShelving;
+use app\models\shop\ShopProduct;
 use app\models\Category;
 
 class ProductController extends Controller{
@@ -114,8 +117,24 @@ class ProductController extends Controller{
     public function actionView($id) {
         $model = Product::find()->with('region', 'unit', 'manufacturer')->where(['id'=>$id])->one();
 
+        $stacks = ArrayHelper::map(ShopStack::find()->all(), 'id', 'stack_number');
+        $shelvings = ArrayHelper::map(ShopStackShelving::find()->all(), 'id', 'shelf_number');
+
+        $shop = new ShopProduct;
+
+        if ($shop->load(Yii::$app->request->post()) && $shop->validate()) {
+            $shop->shop_id = 1;
+            if ($shop->save()) {
+                Yii::$app->session->setFlash('product_added_shop', 'Продукт успешно добавлен в магазин');
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+
         return $this->render('view', [
-            'model' => $model
+            'model' => $model,
+            'shop' => $shop,
+            'stacks' => $stacks,
+            'shelvings' => $shelvings
         ]);
     }
 
@@ -169,6 +188,15 @@ class ProductController extends Controller{
             }
         }
 
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionRemoveShop($id) {
+        $model = ShopProduct::findOne(['product_id' => $id]);
+
+        if ($this->user && ($this->user->role != User::ROLE_USER) && $model && $model->delete()) {
+            Yii::$app->session->setFlash('product_removed_shop', 'Товар успешно удален из магазина');
+        }
         return $this->redirect(Yii::$app->request->referrer);
     }
 }

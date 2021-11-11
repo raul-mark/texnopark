@@ -94,103 +94,56 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
             <?php }?>
-            <div class="box box-info color-palette-box">
-                <div class="box-header">
-                    Продукция
-                </div>
-                <div class="box-body">
-                    <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
-                        'summary' => "Страница {begin} - {end} из {totalCount} товаров<br/><br/>",
-                        'emptyText' => 'Товаров нет',
-                        'pager' => [
-                            'options'=>['class'=>'pagination'],
-                            'pageCssClass' => 'page-item',
-                            'prevPageLabel' => 'Назад',
-                            'nextPageLabel' => 'Вперед',
-                            'maxButtonCount'=>10,
-                            'linkOptions' => [
-                                'class' => 'page-link'
-                            ]
-                         ],
-                        'tableOptions' => [
-                            'class'=>'table table-striped'
-                        ],
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            [
-                                'class' => 'yii\grid\CheckboxColumn'
-                            ],
-                            [
-                                'attribute'=>'id',
-                                'label'=>'<i class="fa fa-sort"></i> ID',
-                                'encodeLabel' => false,
-                                'contentOptions' => [
-                                    'style' => 'width:70px'
-                                ],
-                            ],
-                            [
-                                'attribute'=>'product_id',
-                                'label'=>'<i class="fa fa-sort"></i> Название',
-                                'encodeLabel' => false,
-                                'format' => 'html',
-                                'value' => function ($model, $key, $index, $column) {
-                                    return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->product->id]).'">'.$model->product->name_ru.'</a>' : '-';
-                                },
-                            ],
-                            [
-                                'attribute'=>'product_id',
-                                'label'=>'<i class="fa fa-sort"></i> Артикул',
-                                'encodeLabel' => false,
-                                'format' => 'html',
-                                'value' => function ($model, $key, $index, $column) {
-                                    return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->product->id]).'">'.$model->product->article.'</a>' : '-';
-                                },
-                            ],
-                            [
-                                'attribute'=>'amount',
-                                'label'=>'<i class="fa fa-sort"></i>  Кол-во',
-                                'encodeLabel' => false,
-                                'value' => function ($model, $key, $index, $column) {
-                                    return $model->amount ? $model->amount : '0';
-                                },
-                            ],
-                            // [
-                            //     'class' => 'yii\grid\ActionColumn',
-                            //     'template' => '{view}',
-                            //     'buttons' => [
-                            //         'view' => function ($url, $model) {
-                            //             return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                            //                         <span class="fa fa-cog"></span>
-                            //                     </button>
-                            //                     <ul class="dropdown-menu pull-right">
-                            //                         <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
-                            //                         <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/product/create', 'id'=>$model->id]).'" class="dropdown-item">Редактировать</a></li>
-                            //                         <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/product/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</a></li>
-                            //                     </ul>';
-                            //         }
-                            //     ],
-                            // ]
-                        ],
-                    ]); ?>
-                </div>
-            </div>
-            <?php if ($model->status == 0) {?>
-                <div class="box box-info color-palette-box" style="margin-top:20px">
+            <?php $form = ActiveForm::begin(); ?>
+                <div class="box box-info color-palette-box">
                     <div class="box-header">
-                        Подтверждение
+                        Продукция
                     </div>
-                    <?php $form = ActiveForm::begin(); ?>
+                    <div class="box-body">
+                        <?php if ($products) {?>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Артикул</th>
+                                    <th>Ед. измерения</th>
+                                    <th>Кол-во</th>
+                                    <th>Кол-во по факту</th>
+                                    <th>Объяснение</th>
+                                </tr>
+                                <?php foreach ($products as $product) {?>
+                                    <?php if ($product->product) {?>
+                                        <tr>
+                                            <td><?=$product->product->id;?></td>
+                                            <td><?=$product->product->name_ru;?></td>
+                                            <td><?=$product->product->article;?></td>
+                                            <td><?=$product->unit->name_ru;?></td>
+                                            <td><?=$product->amount;?></td>
+                                            <td><input type="number" name="NoticeTruck[fact][amount_fact][<?=$product->id;?>]" class="form-control" value="<?=$product->amount_fact ? $product->amount_fact : $product->amount;?>"/></td>
+                                            <td><input type="text" name="NoticeTruck[fact][description_fact][<?=$product->id;?>]" class="form-control" value="<?=$product->description_fact;?>"/></td>
+                                        </tr>
+                                    <?php }?>
+                                <?php }?>
+                            </table>
+                        <?php } else {?>
+                            <div class="alert alert-warning text-center">Товаров нет</div>
+                        <?php }?>
+                    </div>
+                </div>
+                <?php if ($model->status == 0) {?>
+                    <div class="box box-info color-palette-box" style="margin-top:20px">
+                        <div class="box-header">
+                            Подтверждение
+                        </div>
                         <div class="box-body">
                             <?=$form->field($model, 'notice_number')->textInput()->input('text', ['placeholder'=>'Введите номер извещения', 'class'=>'form-control'])->label('Номер извещения <span class="required-field">*</span>');?>
                         </div>
                         <div class="box-footer">
                             <?=Html::submitButton('<i class="fa fa-check"></i> Сохранить', ['class'=>'btn btn-primary']);?>
                         </div>
-                    <?php ActiveForm::end();?>
-                </div>
-            <?php }?>
+                    </div>
+                <?php }?>
+            <?php ActiveForm::end();?>
         <?php } else {?>
             <div class="alert alert-warning text-center">Данных нет</div>
         <?php }?>

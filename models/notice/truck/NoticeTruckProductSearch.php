@@ -18,10 +18,10 @@ class NoticeTruckProductSearch extends NoticeTruckProduct
     public function rules()
     {
         return [
-            [['id', 'notice_truck_id', 'product_id', 'sort', 'status'], 'integer'],
-            [['amount'], 'number'],
+            [['id', 'notice_truck_id', 'unit_id', 'product_id', 'sort', 'status'], 'integer'],
+            [['amount', 'amount_fact'], 'number'],
             [['date'], 'safe'],
-            [['description'], 'string'],
+            [['description', 'description_fact'], 'string'],
         ];
     }
 
@@ -65,6 +65,7 @@ class NoticeTruckProductSearch extends NoticeTruckProduct
             'notice_truck_id' => $this->notice_truck_id,
             'product_id' => $this->product_id,
             'amount' => $this->amount,
+            'amount_fact' => $this->amount_fact,
             'date' => $this->date,
             'sort' => $this->sort,
             'status' => $this->status,

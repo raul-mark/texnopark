@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -166,7 +166,7 @@ $script = <<<JS
 
         if (id) {
             $.ajax({
-                url: '/worker/product/get-stacks',
+                url: '/worker_shop/product/get-stacks',
                 type: 'post',
                 data: {'id':id},
                 success: function(data) {
@@ -190,7 +190,7 @@ $script = <<<JS
 
         if (id) {
             $.ajax({
-                url: '/worker/product/get-shelvings',
+                url: '/worker_shop/product/get-shelvings',
                 type: 'post',
                 data: {'id':id},
                 success: function(data) {

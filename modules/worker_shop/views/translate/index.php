@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card">
             <div class="card-header">
                 <div class="pull-right">
-                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker/translate/create']);?>" class="btn btn-primary">
+                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/translate/create']);?>" class="btn btn-primary">
                         <i class="fa fa-pencil"></i> Добавить перевод
                     </a>
                 </div>
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </td>
                                     <td><input type="text" name="Words[names_uz][]" value="<?=$v->name_uz;?>" class="form-control"/></td>
                                     <td><input type="text" name="Words[names_en][]" value="<?=$v->name_en;?>" class="form-control"/></td>
-                                    <td><a href="<?=Yii::$app->urlManager->createUrl(['/worker/translate/remove', 'id'=>$v->id]);?>" class="remove-object btn btn-danger"><i class="fas fa-trash"></i> Удалить</a></td>
+                                    <td><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/translate/remove', 'id'=>$v->id]);?>" class="remove-object btn btn-danger"><i class="fas fa-trash"></i> Удалить</a></td>
                                 </tr>
                             <?php }?>
                         </table>

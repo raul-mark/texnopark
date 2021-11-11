@@ -4,6 +4,7 @@ namespace app\models\notice\control;
 
 use Yii;
 use app\models\product\Product;
+use app\models\Category;
 
 /**
  * This is the model class for table "notice_control_product".
@@ -35,9 +36,9 @@ class NoticeControlProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['notice_control_id', 'product_id', 'sort', 'status'], 'integer'],
+            [['notice_control_id', 'product_id', 'unit_id', 'sort', 'status'], 'integer'],
             [['description'], 'string'],
-            [['amount'], 'number'],
+            [['amount', 'percentage', 'amount_passed', 'amount_defect'], 'number'],
             [['date'], 'safe'],
             [['notice_control_id'], 'exist', 'skipOnError' => true, 'targetClass' => NoticeControl::className(), 'targetAttribute' => ['notice_control_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
@@ -78,5 +79,10 @@ class NoticeControlProduct extends \yii\db\ActiveRecord
     public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    public function getUnit()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'unit_id']);
     }
 }

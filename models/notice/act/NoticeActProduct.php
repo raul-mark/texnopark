@@ -4,6 +4,7 @@ namespace app\models\notice\act;
 
 use Yii;
 use app\models\product\Product;
+use app\models\Category;
 
 /**
  * This is the model class for table "notice_act_product".
@@ -35,9 +36,9 @@ class NoticeActProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['notice_act_id', 'product_id', 'sort', 'status', 'stock_id', 'stack_id', 'shelf_if'], 'integer'],
+            [['notice_act_id', 'product_id', 'unit_id', 'sort', 'status', 'stock_id', 'stack_id', 'shelf_if'], 'integer'],
             [['description'], 'string'],
-            [['amount', 'weight'], 'number'],
+            [['amount', 'weight', 'percentage', 'amount_passed', 'amount_defect'], 'number'],
             [['date'], 'safe'],
             [['notice_act_id'], 'exist', 'skipOnError' => true, 'targetClass' => NoticeAct::className(), 'targetAttribute' => ['notice_act_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
@@ -78,5 +79,10 @@ class NoticeActProduct extends \yii\db\ActiveRecord
     public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    public function getUnit()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'unit_id']);
     }
 }

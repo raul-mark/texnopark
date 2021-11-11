@@ -22,13 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
         </ol>
     </section>
     <section class="content">
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-sm-3">
                 <?=AdminStockMenu::widget();?>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9"> -->
                 <?php $form = ActiveForm::begin(); ?>
-                    <div class="box">
+                    <div class="box box-info color-palette-box">
                         <div class="box-header">
                             Данные этажа
                         </div>
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
                 <?php ActiveForm::end();?>
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
     </section>
 </div>

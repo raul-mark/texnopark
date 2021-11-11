@@ -21,8 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </section>
     <section class="content">
         <?php $form = ActiveForm::begin(); ?>
-            <div class="box">
-                <div class="box-header">
+            <div class="box box-info color-palette-box">
+                <div class="box-header with-border">
                     Данные
                 </div>
             
@@ -48,7 +48,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?=$form->field($model, 'provider_id')->dropDownList($providers, ['class'=>'select-drop form-control', 'prompt'=>'Выберите'])->label('Поставщики');?>
                         </div>
                     </div>
-                    <?= $form->field($model, 'description')->textarea(['rows' => '6'])->label('Описание'); ?>
+                    
+                </div>
+            </div>
+
+            <div class="box box-info color-palette-box">
+                <div class="box-header with-border">
+                    Описание
+                </div>
+            
+                <div class="box-body">
+                    <?=$form->field($model, 'description')->textarea(['rows' => '6'])->label(false); ?>
                 </div>
             </div>
             
@@ -56,17 +66,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if ($model->noticeWaybillProducts) {?>
                     <?php foreach ($model->noticeWaybillProducts as $k => $product) {?>
                         <div class="product-block">
-                            <div class="box">
-                                <div class="box-header"><a href="javascript:;" class="btn btn-danger remove-block-product"><i class="fas fa-trash"></i> Удалить</a></div>
+                            <div class="box box-info color-palette-box">
+                                <div class="box-header with-border"><a href="javascript:;" class="btn btn-danger remove-block-product"><i class="fa fa-trash"></i> Удалить</a></div>
                                 <div class="box-body">
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <?=$form->field($model, 'products[product][]')->dropDownList($products, ['prompt'=>'Выберите продукт по названию', 'class'=>'select-drop select-drop-name form-control', 'options'=>[$product->product_id=>['selected'=>'selected']]])->label('Список продуктов (название)');?>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <?=$form->field($model, 'products[article][]')->dropDownList($articles, ['prompt'=>'Выберите продукт по артикулу', 'class'=>'select-drop select-drop-article form-control', 'options'=>[$product->product_id=>['selected'=>'selected']]])->label('Список продуктов (артикул)');?>
                                         </div>
-                                        <div class="col-sm-4">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <?=$form->field($model, 'products[unit][]')->dropDownList($units, ['prompt'=>'Выберите ед. измерения', 'class'=>'select-drop select-drop-unit form-control', 'options'=>[$product->unit_id=>['selected'=>'selected']]])->label('Еденица измерения');?>
+                                        </div>
+                                        <div class="col-sm-6">
                                             <?=$form->field($model, 'products[amount][]')->textInput()->input('text', ['placeholder'=>'Введите кол-во', 'class'=>'form-control price-sale', 'value'=>$product->amount])->label('Кол-во');?>
                                         </div>
                                     </div>
@@ -77,16 +92,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php }?>
                 <?php } else {?>
                     <div class="product-block">
-                        <div class="box">
-                            <div class="box-body">
+                        <div class="box box-info color-palette-box">
+                            <div class="box-body with-border">
                                 <div class="row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <?=$form->field($model, 'products[product][]')->dropDownList($products, ['prompt'=>'Выберите продукт по названию', 'class'=>'select-drop select-drop-name form-control'])->label('Список продуктов (название)');?>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <?=$form->field($model, 'products[article][]')->dropDownList($articles, ['prompt'=>'Выберите продукт по артикулу', 'class'=>'select-drop select-drop-article form-control select'])->label('Список продуктов (артикул)');?>
                                     </div>
-                                    <div class="col-sm-4">
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <?=$form->field($model, 'products[unit][]')->dropDownList($units, ['prompt'=>'Выберите ед. измерения', 'class'=>'select-drop select-drop-unit form-control select'])->label('Еденица измерения');?>
+                                    </div>
+                                    <div class="col-sm-6">
                                         <?=$form->field($model, 'products[amount][]')->textInput()->input('text', ['placeholder'=>'Введите кол-во', 'class'=>'form-control price-sale'])->label('Кол-во');?>
                                     </div>
                                 </div>

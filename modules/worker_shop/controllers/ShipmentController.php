@@ -12,6 +12,9 @@ use app\models\product\Product;
 use app\models\shipment\Shipment;
 use app\models\shipment\ShipmentSearch;
 use app\models\shipment\ShipmentProductSearch;
+use app\models\shop\ShopProduct;
+use app\models\shop\ShopStack;
+use app\models\shop\ShopStackShelving;
 use app\models\Category;
 
 use app\models\agent\Agent;
@@ -99,7 +102,7 @@ class ShipmentController extends Controller{
     }
 
     public function actionView($id) {
-        $model = Shipment::findOne($id);
+        $model = Shipment::find()->with('shipmentProducts')->where(['id'=>$id])->one();
 
         $searchModel = new ShipmentProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -111,8 +114,23 @@ class ShipmentController extends Controller{
             ]
         ]);
 
+        $product = new ShopProduct;
+
+        if ($product->load(Yii::$app->request->post()) && $product->validate()) {
+            if ($product->saveObject()) {
+                Yii::$app->session->setFlash('product_saved', 'Товары успешно загружены');
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+
+        $stacks = ShopStack::find()->all();
+        $shelvings = ShopStackShelving::find()->all();
+
         return $this->render('view', [
             'model' => $model,
+            'product' => $product,
+            'stacks' => $stacks,
+            'shelvings' => $shelvings,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

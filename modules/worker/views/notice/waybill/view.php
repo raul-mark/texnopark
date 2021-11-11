@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     if ($model->status == 1) {
                                         echo '<span class="label label-success">Активный</span>';
                                     } else {
-                                        echo '<span class="label label-danger">Заблокирован</span>';
+                                        echo '<span class="label label-danger">Не активный</span>';
                                     }
                                 ?>
                             </td>
@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="box-header">
                     Продукция
                 </div>
-                <div class="box-body">
+                <div class="box-body" style="overflow-x: scroll;">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -140,6 +140,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format' => 'html',
                                 'value' => function ($model, $key, $index, $column) {
                                     return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->product->id]).'">'.$model->product->article.'</a>' : '-';
+                                },
+                            ],
+                            [
+                                'attribute'=>'unit_id',
+                                'label'=>'<i class="fa fa-sort"></i> Ед. измерения',
+                                'encodeLabel' => false,
+                                'format' => 'html',
+                                'value' => function ($model, $key, $index, $column) {
+                                    return $model->unit ? $model->unit->name_ru : '-';
                                 },
                             ],
                             [

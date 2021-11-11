@@ -20,6 +20,8 @@ use Yii;
  */
 class ShopStack extends \yii\db\ActiveRecord
 {
+    public $shelfs = [];
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +37,7 @@ class ShopStack extends \yii\db\ActiveRecord
     {
         return [
             [['shop_id', 'status', 'sort'], 'integer'],
-            [['date'], 'safe'],
+            [['date', 'shelfs'], 'safe'],
             [['stack_number', 'shelfs_count'], 'string', 'max' => 255],
             [['shop_id'], 'exist', 'skipOnError' => true, 'targetClass' => Shop::className(), 'targetAttribute' => ['shop_id' => 'id']],
         ];
@@ -57,6 +59,26 @@ class ShopStack extends \yii\db\ActiveRecord
         ];
     }
 
+    public function saveObject() {
+        if ($this->save()) {
+            $shelfs = ShopStackShelving::deleteAll(['shop_stack_id'=>$this->id]);
+            
+            $keys = array('shop_stack_id', 'shelf_number');
+            $vals = array();
+            foreach ($this->shelfs as $k => $shelf) {
+                $vals[] = [
+                    'shop_stack_id' => $this->id,
+                    'shelf_number' => $shelf
+                ];
+            }
+            Yii::$app->db->createCommand()->batchInsert('shop_stack_shelving', $keys, $vals)->execute();
+
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Gets query for [[Shop]].
      *
@@ -75,5 +97,10 @@ class ShopStack extends \yii\db\ActiveRecord
     public function getShopStackShelvings()
     {
         return $this->hasMany(ShopStackShelving::className(), ['shop_stack_id' => 'id']);
+    }
+
+    public function getProducts()
+    {
+        return $this->hasMany(ShopProduct::className(), ['shop_stack_id' => 'id']);
     }
 }

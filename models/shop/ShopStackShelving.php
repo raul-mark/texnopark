@@ -36,7 +36,7 @@ class ShopStackShelving extends \yii\db\ActiveRecord
         return [
             [['shop_stack_id', 'status', 'sort'], 'integer'],
             [['date'], 'safe'],
-            [['row', 'cell', 'ip'], 'string', 'max' => 255],
+            [['shelf_number', 'ip'], 'string', 'max' => 255],
             [['shop_stack_id'], 'exist', 'skipOnError' => true, 'targetClass' => ShopStack::className(), 'targetAttribute' => ['shop_stack_id' => 'id']],
         ];
     }
@@ -49,8 +49,7 @@ class ShopStackShelving extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'shop_stack_id' => 'Shop Stack ID',
-            'row' => 'Row',
-            'cell' => 'Cell',
+            'shelf_number' => 'Shelf Number',
             'status' => 'Status',
             'sort' => 'Sort',
             'date' => 'Date',
@@ -66,5 +65,10 @@ class ShopStackShelving extends \yii\db\ActiveRecord
     public function getShopStack()
     {
         return $this->hasOne(ShopStack::className(), ['id' => 'shop_stack_id']);
+    }
+
+    public function getProducts()
+    {
+        return $this->hasMany(ShopProduct::className(), ['shop_stack_shelving_id' => 'id'])->andOnCondition(['shop_stack_id'=>$this->shop_stack_id]);
     }
 }

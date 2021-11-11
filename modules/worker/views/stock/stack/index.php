@@ -79,109 +79,96 @@ $id = Yii::$app->request->get('id');
                         <?php }?>
                     </div>
                 <?php }?>
-                <div class="box">
-                    <!-- <div class="box-header">
-                        <div class="box-title">
-                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/stack-create', 'id'=>$id])?>" class="btn btn-primary">
-                                <i class="fa fa-plus"></i>
-                                Добавить этаж
-                            </a>
-                        </div>
-                        <div id="action-links" style="display:none">
-                            <a href="javascript:;" class="btn btn-danger" data-value="remove"><i class="fa fa-trash"></i> Удалить</a>
-                            <a href="javascript:;" class="btn btn-warning" data-value="disable"><i class="fa fa-lock"></i> Заблокировать</a>
-                            <a href="javascript:;" class="btn btn-success" data-value="enable"><i class="fa fa-unlock"></i> Разблокировать</a>
-                        </div>
-                    </div> -->
-                    <div class="box-body" id="item-block">
-                        <?php Pjax::begin(); ?>
-                            <?= GridView::widget([
-                                'dataProvider' => $dataProvider,
-                                'filterModel' => $searchModel,
-                                'summary' => "Страница {begin} - {end} из {totalCount} этажей<br/><br/>",
-                                'emptyText' => 'Этажей нет',
-                                'pager' => [
-                                    'options'=>['class'=>'pagination'],
-                                    'pageCssClass' => 'page-item',
-                                    'prevPageLabel' => 'Назад',
-                                    'nextPageLabel' => 'Вперед',
-                                    'maxButtonCount'=>10,
-                                    'linkOptions' => [
-                                        'class' => 'page-link'
-                                    ]
-                                 ],
-                                'tableOptions' => [
-                                    'class'=>'table table-striped'
+            </div>
+        </div>
+        <div class="box box-info color-palette-box">
+            <div class="box-body" id="item-block" style="overflow-x: scroll;">
+                <?php Pjax::begin(); ?>
+                    <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'filterModel' => $searchModel,
+                        'summary' => "Страница {begin} - {end} из {totalCount} этажей<br/><br/>",
+                        'emptyText' => 'Этажей нет',
+                        'pager' => [
+                            'options'=>['class'=>'pagination'],
+                            'pageCssClass' => 'page-item',
+                            'prevPageLabel' => 'Назад',
+                            'nextPageLabel' => 'Вперед',
+                            'maxButtonCount'=>10,
+                            'linkOptions' => [
+                                'class' => 'page-link'
+                            ]
+                            ],
+                        'tableOptions' => [
+                            'class'=>'table table-striped'
+                        ],
+                        'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                            [
+                                'class' => 'yii\grid\CheckboxColumn'
+                            ],
+                            [
+                                'attribute'=>'id',
+                                'label'=>'<i class="fa fa-sort"></i> ID',
+                                'encodeLabel' => false,
+                                'contentOptions' => [
+                                    'style' => 'width:70px'
                                 ],
-                                'columns' => [
-                                    ['class' => 'yii\grid\SerialColumn'],
-                                    [
-                                        'class' => 'yii\grid\CheckboxColumn'
-                                    ],
-                                    [
-                                        'attribute'=>'id',
-                                        'label'=>'<i class="fa fa-sort"></i> ID',
-                                        'encodeLabel' => false,
-                                        'contentOptions' => [
-                                            'style' => 'width:70px'
-                                        ],
-                                    ],
-                                    [
-                                        'attribute'=>'stack_number',
-                                        'label'=>'<i class="fa fa-sort"></i> Номер этажа',
-                                        'encodeLabel' => false,
-                                    ],
-                                    [
-                                        'attribute'=>'shelfs_count',
-                                        'label'=>'<i class="fa fa-sort"></i> Кол-во полок',
-                                        'encodeLabel' => false,
-                                        'value' => function ($model, $key, $index, $column) {
-                                            return $model->stackShelvings ? count($model->stackShelvings) : '-';
-                                        },
-                                    ],
-                                    [
-                                        'attribute'=>'status',
-                                        'label'=>'<i class="fa fa-sort"></i> Статус',
-                                        'encodeLabel' => false,
-                                        'format' => 'html',
-                                        'contentOptions' => [
-                                            'style' => 'width:100px'
-                                        ],
-                                        'value' => function ($model, $key, $index, $column) {
-                                            if ($model->status == 1) {
-                                                return '<small class="label label-success">Активный</small>';
-                                            } else {
-                                                return '<small class="label label-danger">Заблокирован</small>';
-                                            }
-                                        },
-                                    ],
-                                    [
-                                        'attribute'=>'date',
-                                        'label'=>'<i class="fa fa-sort"></i> Дата',
-                                        'encodeLabel' => false,
-                                        'value' => function ($model, $key, $index, $column) {
-                                            return $model->date;
-                                        },
-                                    ],
-                                    [
-                                        'class' => 'yii\grid\ActionColumn',
-                                        'template' => '{view}',
-                                        'buttons' => [
-                                            'view' => function ($url, $model) {
-                                                return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                            <span class="fa fa-cog"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/stock/stack-view', 'id'=>$model->stock_id, 'stack_id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
-                                                        </ul>';
-                                            }
-                                        ],
-                                    ]
+                            ],
+                            [
+                                'attribute'=>'stack_number',
+                                'label'=>'<i class="fa fa-sort"></i> Номер этажа',
+                                'encodeLabel' => false,
+                            ],
+                            [
+                                'attribute'=>'shelfs_count',
+                                'label'=>'<i class="fa fa-sort"></i> Кол-во полок',
+                                'encodeLabel' => false,
+                                'value' => function ($model, $key, $index, $column) {
+                                    return $model->stackShelvings ? count($model->stackShelvings) : '-';
+                                },
+                            ],
+                            [
+                                'attribute'=>'status',
+                                'label'=>'<i class="fa fa-sort"></i> Статус',
+                                'encodeLabel' => false,
+                                'format' => 'html',
+                                'contentOptions' => [
+                                    'style' => 'width:100px'
                                 ],
-                            ]); ?>
-                        <?php Pjax::end(); ?>
-                    </div>
-                </div>
+                                'value' => function ($model, $key, $index, $column) {
+                                    if ($model->status == 1) {
+                                        return '<small class="label label-success">Активный</small>';
+                                    } else {
+                                        return '<small class="label label-danger">Заблокирован</small>';
+                                    }
+                                },
+                            ],
+                            [
+                                'attribute'=>'date',
+                                'label'=>'<i class="fa fa-sort"></i> Дата',
+                                'encodeLabel' => false,
+                                'value' => function ($model, $key, $index, $column) {
+                                    return $model->date;
+                                },
+                            ],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'template' => '{view}',
+                                'buttons' => [
+                                    'view' => function ($url, $model) {
+                                        return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="fa fa-cog"></span>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/stock/stack-view', 'id'=>$model->stock_id, 'stack_id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
+                                                </ul>';
+                                    }
+                                ],
+                            ]
+                        ],
+                    ]); ?>
+                <?php Pjax::end(); ?>
             </div>
         </div>
     </section>

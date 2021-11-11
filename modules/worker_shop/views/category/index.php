@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <section class="content-header">
         <h1><?=$this->title;?></h1>
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 <li><a href="javascript:;" class="add_category" data-value="<?=$c['id'];?>" data-toggle="modal" data-target="#add-category">Добавить подкатегорию</a></li>
                                                                 <li><a href="javascript:;" class="view_category" data-value="<?=$c['id'];?>" data-toggle="modal" data-target="#view-category">Посмотреть</a></li>
                                                                 <li><a href="javascript:;" class="update_category" data-value="<?=$c['id'];?>" data-toggle="modal" data-target="#update-category">Редактировать</a></li>
-                                                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/category/remove', 'id'=>$c['id']]);?>" class="remove-object">Удалить</a></li>
+                                                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/category/remove', 'id'=>$c['id']]);?>" class="remove-object">Удалить</a></li>
                                                             </ul>
                                                         </div>
                                                         <?=$c['name_ru'];?>

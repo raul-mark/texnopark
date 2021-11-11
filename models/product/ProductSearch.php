@@ -12,6 +12,7 @@ use app\models\product\Product;
  */
 class ProductSearch extends Product
 {
+    public $datepicker;
     /**
      * {@inheritdoc}
      */
@@ -19,7 +20,7 @@ class ProductSearch extends Product
     {
         return [
             [['id', 'stock_id', 'amount', 'status', 'sort', 'manufacturer_id', 'unit_id', 'region_id', 'category_id', 'stack_id', 'shelf_id'], 'integer'],
-            [['name_ru', 'name_en', 'name_uz', 'description_ru', 'description_en', 'description_uz', 'article', 'model', 'qr', 'date', 'ip'], 'safe'],
+            [['datepicker', 'name_ru', 'name_en', 'name_uz', 'description_ru', 'description_en', 'description_uz', 'article', 'model', 'qr', 'date', 'ip'], 'safe'],
             [['price_buy', 'price_sale', 'amount_limit'], 'number'],
         ];
     }
@@ -85,6 +86,14 @@ class ProductSearch extends Product
             ->andFilterWhere(['like', 'model', $this->model])
             ->andFilterWhere(['like', 'qr', $this->qr])
             ->andFilterWhere(['like', 'ip', $this->ip]);
+
+        if ($this->datepicker) {
+            $daterange = explode(' - ', $this->datepicker);
+            $start = $daterange[0];
+            $end = $daterange[1];
+
+            $query->andFilterWhere(['between', 'product.date', $start, $end]);
+        }
 
         return $dataProvider;
     }

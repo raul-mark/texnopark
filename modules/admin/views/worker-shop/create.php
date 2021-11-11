@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </section>
     <section class="content">
         <?php $form = ActiveForm::begin(); ?>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-body">
                     <div class="row">
                         <div class="col-sm-4">
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
             </div>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-body">
                     <div class="row">
                         <div class="col-sm-6">

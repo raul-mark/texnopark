@@ -102,106 +102,104 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="box-header">
                             Товары
                         </div>
-                        <div class="box-body">
-                            
-                                <?= GridView::widget([
-                                    'dataProvider' => $dataProvider,
-                                    'filterModel' => $searchModel,
-                                    'summary' => "Страница {begin} - {end} из {totalCount} данных<br/><br/>",
-                                    'emptyText' => 'Данных нет',
-                                    'pager' => [
-                                        'options'=>['class'=>'pagination'],
-                                        'pageCssClass' => 'page-item',
-                                        'prevPageLabel' => 'Назад',
-                                        'nextPageLabel' => 'Вперед',
-                                        'maxButtonCount'=>10,
-                                        'linkOptions' => [
-                                            'class' => 'page-link'
-                                        ]
-                                     ],
-                                    'tableOptions' => [
-                                        'class'=>'table table-striped'
+                        <div class="box-body" style="overflow-x: scroll;">
+                            <?= GridView::widget([
+                                'dataProvider' => $dataProvider,
+                                'filterModel' => $searchModel,
+                                'summary' => "Страница {begin} - {end} из {totalCount} данных<br/><br/>",
+                                'emptyText' => 'Данных нет',
+                                'pager' => [
+                                    'options'=>['class'=>'pagination'],
+                                    'pageCssClass' => 'page-item',
+                                    'prevPageLabel' => 'Назад',
+                                    'nextPageLabel' => 'Вперед',
+                                    'maxButtonCount'=>10,
+                                    'linkOptions' => [
+                                        'class' => 'page-link'
+                                    ]
                                     ],
-                                    'columns' => [
-                                        ['class' => 'yii\grid\SerialColumn'],
-                                        [
-                                            'class' => 'yii\grid\CheckboxColumn'
-                                        ],
-                                        // [
-                                        //     'attribute'=>'qr',
-                                        //     'label'=>'<i class="fa fa-sort"></i> QR',
-                                        //     'encodeLabel' => false,
-                                        //     'format' => 'html',
-                                        //     'value' => function ($model, $key, $index, $column) {
-                                        //         return Text::widget([
-                                        //             'outputDir' => '@webroot/upload/qrcode',
-                                        //             'outputDirWeb' => '@web/upload/qrcode',
-                                        //             'ecLevel' => QRcode::QR_ECLEVEL_L,
-                                        //             'text' => $model->qr,
-                                        //             'size' => 2,
-                                        //         ]);
-                                        //     },
-                                        // ],
-                                        [
-                                            'attribute'=>'id',
-                                            'label'=>'<i class="fa fa-sort"></i> ID',
-                                            'encodeLabel' => false,
-                                            'contentOptions' => [
-                                                'style' => 'width:70px'
-                                            ],
-                                        ],
-                                        [
-                                            'attribute'=>'product_id',
-                                            'label'=>'<i class="fa fa-sort"></i> Товар',
-                                            'encodeLabel' => false,
-                                            'format' => 'html',
-                                            'value' => function ($model, $key, $index, $column) {
-                                                return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->product->id]).'">'.$model->product->name_ru.'</a>' : '-';
-                                            },
-                                        ],
-                                        [
-                                            'attribute'=>'amount',
-                                            'label'=>'<i class="fa fa-sort"></i> Кол-во',
-                                            'encodeLabel' => false,
-                                        ],
-                                        [
-                                            'attribute'=>'article',
-                                            'label'=>'<i class="fa fa-sort"></i> Артикул',
-                                            'encodeLabel' => false,
-                                        ],
-                                        [
-                                            'attribute'=>'status',
-                                            'label'=>'<i class="fa fa-sort"></i> Статус',
-                                            'encodeLabel' => false,
-                                            'format' => 'html',
-                                            'contentOptions' => [
-                                                'style' => 'width:100px'
-                                            ],
-                                            'value' => function ($model, $key, $index, $column) {
-                                                if ($model->status == 1) {
-                                                    return '<small class="label label-success">Активный</small>';
-                                                } else {
-                                                    return '<small class="label label-danger">Заблокирован</small>';
-                                                }
-                                            },
-                                        ],
-                                        [
-                                            'class' => 'yii\grid\ActionColumn',
-                                            'template' => '{view}',
-                                            'buttons' => [
-                                                'view' => function ($url, $model) {
-                                                    return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                                <span class="fa fa-cog"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu pull-right">
-                                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</a></li>
-                                                            </ul>';
-                                                }
-                                            ],
-                                        ]
+                                'tableOptions' => [
+                                    'class'=>'table table-striped'
+                                ],
+                                'columns' => [
+                                    ['class' => 'yii\grid\SerialColumn'],
+                                    [
+                                        'class' => 'yii\grid\CheckboxColumn'
                                     ],
-                                ]); ?>
-                            
+                                    // [
+                                    //     'attribute'=>'qr',
+                                    //     'label'=>'<i class="fa fa-sort"></i> QR',
+                                    //     'encodeLabel' => false,
+                                    //     'format' => 'html',
+                                    //     'value' => function ($model, $key, $index, $column) {
+                                    //         return Text::widget([
+                                    //             'outputDir' => '@webroot/upload/qrcode',
+                                    //             'outputDirWeb' => '@web/upload/qrcode',
+                                    //             'ecLevel' => QRcode::QR_ECLEVEL_L,
+                                    //             'text' => $model->qr,
+                                    //             'size' => 2,
+                                    //         ]);
+                                    //     },
+                                    // ],
+                                    [
+                                        'attribute'=>'id',
+                                        'label'=>'<i class="fa fa-sort"></i> ID',
+                                        'encodeLabel' => false,
+                                        'contentOptions' => [
+                                            'style' => 'width:70px'
+                                        ],
+                                    ],
+                                    [
+                                        'attribute'=>'product_id',
+                                        'label'=>'<i class="fa fa-sort"></i> Товар',
+                                        'encodeLabel' => false,
+                                        'format' => 'html',
+                                        'value' => function ($model, $key, $index, $column) {
+                                            return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->product->id]).'">'.$model->product->name_ru.'</a>' : '-';
+                                        },
+                                    ],
+                                    [
+                                        'attribute'=>'amount',
+                                        'label'=>'<i class="fa fa-sort"></i> Кол-во',
+                                        'encodeLabel' => false,
+                                    ],
+                                    [
+                                        'attribute'=>'article',
+                                        'label'=>'<i class="fa fa-sort"></i> Артикул',
+                                        'encodeLabel' => false,
+                                    ],
+                                    [
+                                        'attribute'=>'status',
+                                        'label'=>'<i class="fa fa-sort"></i> Статус',
+                                        'encodeLabel' => false,
+                                        'format' => 'html',
+                                        'contentOptions' => [
+                                            'style' => 'width:100px'
+                                        ],
+                                        'value' => function ($model, $key, $index, $column) {
+                                            if ($model->status == 1) {
+                                                return '<small class="label label-success">Активный</small>';
+                                            } else {
+                                                return '<small class="label label-danger">Заблокирован</small>';
+                                            }
+                                        },
+                                    ],
+                                    [
+                                        'class' => 'yii\grid\ActionColumn',
+                                        'template' => '{view}',
+                                        'buttons' => [
+                                            'view' => function ($url, $model) {
+                                                return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="fa fa-cog"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</a></li>
+                                                        </ul>';
+                                            }
+                                        ],
+                                    ]
+                                ],
+                            ]); ?>
                         </div>
                     </div>
                 <?php } else {?>

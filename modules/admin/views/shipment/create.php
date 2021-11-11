@@ -24,19 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="alert alert-success text-center alert-bottom"><?=Yii::$app->session->getFlash('photo_removed');?></div>
         <?php }?>
         <?php $form = ActiveForm::begin(); ?>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Данные отгрузки
                 </div>
 
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <?=$form->field($model, 'agent_id')->dropDownList($agents, ['prompt'=>'Выберите контрагента', 'class'=>'select-drop form-control'])->label('Контрагенты');?>
-                        </div>
-                        <div class="col-sm-6">
-                            <?=$form->field($model, 'type_id')->dropDownList($types, ['prompt'=>'Выберите тип отгрузки', 'class'=>'select-drop form-control'])->label('Тип отгрузки');?>
-                        </div>
                         <div class="col-sm-6">
                             <?=$form->field($model, 'fio')->textInput()->input('text', ['placeholder'=>'Введите Ф.И.О', 'class'=>'form-control'])->label('Ф.И.О <span class="required-field">*</span>');?>
                         </div>
@@ -51,15 +45,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if ($model->shipmentProducts) {?>
                     <?php foreach ($model->shipmentProducts as $k => $product) {?>
                         <div class="product-block">
-                            <div class="box">
-                                <div class="box-header"><a href="javascript:;" class="btn btn-danger remove-block-product"><i class="fas fa-trash"></i> Удалить</a></div>
+                            <div class="box box-warning color-palette-box">
+                                <div class="box-header"><a href="javascript:;" class="btn btn-danger remove-block-product"><i class="fa fa-trash"></i> Удалить</a></div>
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-sm-4">
-                                            <?=$form->field($model, 'products[product][]')->dropDownList($products, ['prompt'=>'Выберите товар', 'class'=>'select-drop form-control', 'options'=>[$product->product_id=>['selected'=>'selected']]])->label('Список товаров');?>
+                                            <?=$form->field($model, 'products[product][]')->dropDownList($products, ['prompt'=>'Выберите товар', 'class'=>'select-drop select-drop-name form-control', 'options'=>[$product->product_id=>['selected'=>'selected']]])->label('Список товаров');?>
                                         </div>
                                         <div class="col-sm-4">
-                                            <?=$form->field($model, 'products[article][]')->textInput()->input('text', ['placeholder'=>'Введите артикул товара', 'class'=>'form-control', 'value'=>$product->artice])->label('Артикул');?>
+                                            <?=$form->field($model, 'products[article][]')->dropDownList($articles, ['prompt'=>'Выберите артикул', 'class'=>'select-drop select-drop-article form-control', 'options'=>[$product->product_id=>['selected'=>'selected']]])->label('Список артикулов');?>
+                                            <?//=$form->field($model, 'products[article][]')->textInput()->input('text', ['placeholder'=>'Введите артикул товара', 'class'=>'form-control', 'value'=>$product->article])->label('Артикул');?>
                                         </div>
                                         <div class="col-sm-4">
                                             <?=$form->field($model, 'products[amount][]')->textInput()->input('text', ['placeholder'=>'Введите количество', 'class'=>'form-control', 'value'=>$product->amount])->label('Количество');?>
@@ -71,14 +66,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php }?>
                 <?php } else {?>
                     <div class="product-block">
-                        <div class="box">
+                        <div class="box box-warning color-palette-box">
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <?=$form->field($model, 'products[product][]')->dropDownList($products, ['prompt'=>'Выберите товар', 'class'=>'select-drop form-control'])->label('Список товаров');?>
+                                        <?=$form->field($model, 'products[product][]')->dropDownList($products, ['prompt'=>'Выберите товар', 'class'=>'select-drop select-drop-name form-control'])->label('Список товаров');?>
                                     </div>
                                     <div class="col-sm-4">
-                                        <?=$form->field($model, 'products[article][]')->textInput()->input('text', ['placeholder'=>'Введите артикул', 'class'=>'form-control'])->label('Артикул');?>
+                                        <?=$form->field($model, 'products[article][]')->dropDownList($articles, ['prompt'=>'Выберите артикул', 'class'=>'select-drop select-drop-article form-control'])->label('Список артикулов');?>
+                                        <?//=$form->field($model, 'products[article][]')->textInput()->input('text', ['placeholder'=>'Введите артикул', 'class'=>'form-control'])->label('Артикул');?>
                                     </div>
                                     <div class="col-sm-4">
                                         <?=$form->field($model, 'products[amount][]')->textInput()->input('text', ['placeholder'=>'Введите количество', 'class'=>'form-control'])->label('Количество');?>

@@ -35,6 +35,7 @@ class Shop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name_ru', 'description_ru'], 'required', 'message' => 'Заполните поле'],
             [['user_id', 'status', 'sort'], 'integer'],
             [['date'], 'safe'],
             [['name_ru', 'description_ru'], 'string', 'max' => 255],

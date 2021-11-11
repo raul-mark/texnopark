@@ -15,6 +15,7 @@ use app\models\Settings;
 use app\models\notice\truck\NoticeTruck;
 use app\models\notice\control\NoticeControl;
 use app\models\notice\act\NoticeAct;
+use app\models\notice_shop_stock\NoticeShopStock;
 
 AdminAsset::register($this);
 
@@ -24,7 +25,7 @@ $action = Yii::$app->controller->action->id;
 $user = null;
 if (!Yii::$app->user->isGuest) {
     $user = User::find()->with('image', 'moderatorAccess', 'moderatorAccess.moderator')->where(['id'=>Yii::$app->user->identity->id])->one();
-    $notifications = Notification::find()->where(['user_id'=>$user->id, 'status'=>0])->all();
+    $notifications = Notification::find()->where(['or', ['type'=>Yii::$app->user->identity->type], ['type'=>'shop_stock']])->andWhere(['status'=>0])->all();
 }
 
 $accesses = array();
@@ -41,6 +42,7 @@ $shipments = Shipment::find()->where(['status'=>0])->count();
 $trucks = NoticeTruck::find()->where(['status'=>0])->count();
 $controls = NoticeControl::find()->where(['status'=>0])->count();
 $acts = NoticeAct::find()->where(['status'=>0])->count();
+$shop_stock = NoticeShopStock::find()->where(['status'=>0])->count();
 
 $currency = Settings::findOne(['type'=>'currency']);
 if (!$currency) {
@@ -65,8 +67,10 @@ if (!$currency) {
         <?php if (($controller != 'default') || (($controller == 'default') && ($action != 'index'))) {?>
             <header class="main-header">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/'])?>" class="logo">
-                    <span class="logo-mini"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
-                    <span class="logo-lg"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
+                    <!-- <span class="logo-mini"><img src="/assets_files/img/texno_logo.png" width="50"/></span>
+                    <span class="logo-lg"><img src="/assets_files/img/texno_logo.png" width="50"/></span> -->
+                    <span class="logo-mini"><b>T</b>P</span>
+                    <span class="logo-lg"><b>TEXNO</b>PARK</span>
                 </a>
                 <nav class="navbar navbar-static-top">
                     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -79,7 +83,7 @@ if (!$currency) {
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
                             <li class="dropdown notifications-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/worker/notification']);?>">
                                     <i class="fa fa-bell-o"></i>
                                     <span class="label label-warning"><?=($notifications && count($notifications) > 0) ? count($notifications) : '';?></span>
                                 </a>
@@ -184,7 +188,7 @@ if (!$currency) {
                                     <span>Накладная</span>
                                 <?php }?>
                                 <?php if ($user && ($user->type == 'truck')) {?>
-                                    <span>Прием гурзовика</span>
+                                    <span>Прием грузовика</span>
                                     <?php if ($trucks > 0) {?>
                                         <span class="pull-right-container">
                                             <small class="label pull-right bg-red"><?=$trucks;?></small>
@@ -209,6 +213,17 @@ if (!$currency) {
                                 <?php }?>
                             </a>
                         </li>
+
+                        <!-- <li <?=($controller == 'notice-shop') ? 'class="active"' : '';?>>
+                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker/notice-shop'])?>">
+                                <i class="fa fa-check"></i> <span>Заявки от магазина</span>
+                                <?php if ($shop_stock > 0) {?>
+                                    <span class="pull-right-container">
+                                        <small class="label pull-right bg-red"><?=$shop_stock;?></small>
+                                    </span>
+                                <?php }?>
+                            </a>
+                        </li> -->
                     
                         <li class="treeview<?=($controller == 'product') ? ' active' : '';?>">
                             <a href="#">
@@ -222,6 +237,22 @@ if (!$currency) {
                                 <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/', 'type'=>'defect'])?>"><i class="fa fa-circle-o"></i> Дефектная продукция</a></li>
                             </ul>
                         </li>
+
+                        <?php if ($user) {?>
+                            <li class="treeview<?=($controller == 'category') ? ' active' : '';?>">
+                                <a href="#">
+                                    <i class="fa fa-list"></i> <span>Справочник</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/category/', 'type'=>'provider'])?>"><i class="fa fa-circle-o"></i> Поставщики</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/category/', 'type'=>'unit'])?>"><i class="fa fa-circle-o"></i> Ед. измерения</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/category/', 'type'=>'manufacturer'])?>"><i class="fa fa-circle-o"></i> Производители</a></li>
+                                </ul>
+                            </li>
+                        <?php }?>
                         
                         <li>
                             <a href="<?=Yii::$app->urlManager->createUrl(['/main/log-out'])?>">

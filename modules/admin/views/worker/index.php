@@ -3,6 +3,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
+use kartik\select2\Select2;
+
 $this->title = 'Сотрудники';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -20,14 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (Yii::$app->session->hasFlash('worker_removed')) {?>
             <div class="alert alert-success text-center"><?=Yii::$app->session->getFlash('worker_removed');?></div>
         <?php }?>
-        <div class="box">
+        <div class="box box-info color-palette-box">
             <div class="box-header">
                 <div class="pull-right">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/worker/create'])?>" class="btn btn-primary"><i class="fa fa-plus"></i> Добавить сотрудника</a>
                 </div>
             </div>
             <div class="box-body">
-                <div class="grid-table">
+                <div class="grid-table" style="overflow-x: scroll;">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -87,6 +89,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'label'=>'<i class="fa fa-sort"></i> Тип',
                                 'encodeLabel' => false,
                                 'format' => 'html',
+                                'filter' => Select2::widget([
+                                    'model' => $searchModel,
+                                    'attribute' => 'type',
+                                    'data' => [
+                                        'waybill' => 'Накладная',
+                                        'truck' => 'Форма приёма грузовика',
+                                        'control'=>'Форма входного контроля',
+                                        'act'=>'Акт приемки'
+                                    ],
+                                    'options' => [
+                                        'placeholder' => '',
+                                    ],
+                                    'pluginOptions' => [
+                                        'allowClear' => true
+                                    ],
+                                ]),
                                 'value' => function ($model, $key, $index, $column) {
                                     if ($model->type == 'waybill') {
                                         return '<span class="label label-success">Накладная</span>';

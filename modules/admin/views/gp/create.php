@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="alert alert-success text-center alert-bottom"><?=Yii::$app->session->getFlash('photo_removed');?></div>
         <?php }?>
         <?php $form = ActiveForm::begin(); ?>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Данные товара
                 </div>
@@ -33,10 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="box-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <?=$form->field($model, 'name_ru')->textInput()->input('text', ['placeholder'=>'Введите наименование', 'class'=>'form-control'])->label('Наименование <span class="required-field">*</span>');?>
+                            <?=$form->field($model, 'name_ru')->textInput()->input('text', ['placeholder'=>'Введите наименование', 'class'=>'form-control', 'value' => ($type == 'b_department_gp') ? $industry->name_ru : ''])->label('Наименование <span class="required-field">*</span>');?>
                         </div>
                         <div class="col-sm-6">
-                            <?=$form->field($model, 'article')->textInput()->input('text', ['placeholder'=>'Введите артикул', 'class'=>'form-control'])->label('Артикул <span class="required-field">*</span>');?>
+                            <?=$form->field($model, 'article')->textInput()->input('text', ['placeholder'=>'Введите артикул', 'class'=>'form-control', 'value' => ($type == 'b_department_gp') ? $industry->article : ''])->label('Артикул <span class="required-field">*</span>');?>
                         </div>
                     </div>
                     <div class="row">
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?=$form->field($model, 'price_sale')->textInput()->input('text', ['placeholder'=>'Введите цену', 'class'=>'form-control'])->label('Цена');?>
                         </div>
                         <div class="col-sm-6">
-                            <?=$form->field($model, 'amount')->textInput()->input('text', ['placeholder'=>'Введите количество', 'class'=>'form-control'])->label('Количество');?>
+                            <?=$form->field($model, 'amount')->textInput()->input('text', ['placeholder'=>'Введите количество', 'class'=>'form-control', 'value'=>$industry->amount])->label('Количество');?>
                         </div>
                     </div>
                     <div class="row">

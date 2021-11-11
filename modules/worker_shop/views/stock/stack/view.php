@@ -17,7 +17,7 @@ $id = Yii::$app->request->get('id');
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -40,9 +40,9 @@ $id = Yii::$app->request->get('id');
                                     <span class="fa fa-cog"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-left">
-                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/stack-create', 'id'=>$id]);?>" class="dropdown-item">Добавить этаж</a></li>
-                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/stack-create', 'id'=>$id, 'stack_id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
-                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/stack-remove', 'id'=>$id, 'stack_id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/stack-create', 'id'=>$id]);?>" class="dropdown-item">Добавить этаж</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/stack-create', 'id'=>$id, 'stack_id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/stack-remove', 'id'=>$id, 'stack_id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
                                 </ul>
                             </div>
                         </div> -->
@@ -104,7 +104,7 @@ $id = Yii::$app->request->get('id');
                         <div class="box-header">
                             <?=$this->title;?>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="overflow-x: scroll;">
                             
                                 <?= GridView::widget([
                                     'dataProvider' => $dataProvider,
@@ -232,7 +232,7 @@ $id = Yii::$app->request->get('id');
                                                                 <span class="fa fa-cog"></span>
                                                             </button>
                                                             <ul class="dropdown-menu pull-right">
-                                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
+                                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
                                                             </ul>';
                                                 }
                                             ],

@@ -11,6 +11,7 @@ use app\models\gp\Gp;
  */
 class GpSearch extends Gp
 {
+    public $datepicker;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class GpSearch extends Gp
     {
         return [
             [['id', 'stock_id', 'stack_id', 'shelf_id', 'manufacturer_id', 'amount', 'status', 'sort'], 'integer'],
-            [['name_ru', 'name_en', 'name_uz', 'description_ru', 'description_en', 'description_uz', 'article', 'model', 'qr', 'date', 'ip'], 'safe'],
+            [['datepicker', 'name_ru', 'name_en', 'name_uz', 'description_ru', 'description_en', 'description_uz', 'article', 'model', 'qr', 'date', 'ip'], 'safe'],
             [['price_buy', 'price_sale'], 'number'],
         ];
     }
@@ -80,6 +81,14 @@ class GpSearch extends Gp
             ->andFilterWhere(['like', 'manufacturer', $this->manufacturer])
             ->andFilterWhere(['like', 'qr', $this->qr])
             ->andFilterWhere(['like', 'ip', $this->ip]);
+
+        if ($this->datepicker) {
+            $daterange = explode(' - ', $this->datepicker);
+            $start = $daterange[0];
+            $end = $daterange[1];
+
+            $query->andFilterWhere(['between', 'gp.date', $start, $end]);
+        }
 
         return $dataProvider;
     }

@@ -9,6 +9,7 @@ use app\models\notice\waybill\NoticeWaybill;
 use app\models\notice\control\NoticeControl;
 use app\models\notice\truck\NoticeTruckProduct;
 use app\models\Category;
+use app\models\Notification;
 
 /**
  * This is the model class for table "notice_truck".
@@ -30,6 +31,7 @@ use app\models\Category;
 class NoticeTruck extends \yii\db\ActiveRecord
 {
     public $truck_number, $truck_number_reg, $invoice_number, $provider_id, $article, $description, $date_notice;
+    public $fact;
 
     /**
      * {@inheritdoc}
@@ -48,7 +50,7 @@ class NoticeTruck extends \yii\db\ActiveRecord
             [['notice_number'], 'required', 'message' => 'Заполните поле'],
             [['user_id', 'notice_waybill_id', 'sort', 'status'], 'integer'],
             [['description'], 'string'],
-            [['date'], 'safe'],
+            [['date', 'fact'], 'safe'],
             [['notice_number'], 'string', 'max' => 255],
             [['notice_waybill_id'], 'exist', 'skipOnError' => true, 'targetClass' => NoticeWaybill::className(), 'targetAttribute' => ['notice_waybill_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -72,34 +74,56 @@ class NoticeTruck extends \yii\db\ActiveRecord
         ];
     }
 
-    public function saveObject() {
+    public function saveObject($type = 'create') {
         $post = Yii::$app->request->post();
 
-        $this->user_id = Yii::$app->user->identity->id;
+        if ($type = 'create') {
+            $this->user_id = Yii::$app->user->identity->id;
+        }
         $this->status = 1;
 
         if ($this->save()) {
-            $products = NoticeTruckProduct::find()->where(['notice_truck_id'=>$this->id])->all();
-
-            $control = new NoticeControl;
-            $control->date_notice = $this->noticeWaybill->date_notice;
-            $control->status = 0;
-            $control->notice_truck_id = $this->id;
-
-            if ($control->save(false)) {
-                $keys = array('notice_control_id', 'product_id', 'amount', 'description', 'status');
-                $vals = array();
-                foreach ($products as $k => $product) {
-                    $vals[] = [
-                        'notice_control_id' => $control->id,
-                        'product_id' => $product->product_id,
-                        'amount' => $product->amount,
-                        'description' => $product->description,
-                        'status' => 1
-                    ];
+            if ($this->fact) {
+                foreach ($this->fact['amount_fact'] as $id => $fact) {
+                    $pr = NoticeTruckProduct::findOne($id);
+                    $pr->amount_fact = $fact;
+                    $pr->description_fact = $this->fact['description_fact'][$id];
+                    $pr->save(false);
                 }
+            }
 
-                Yii::$app->db->createCommand()->batchInsert('notice_control_product', $keys, $vals)->execute();
+            if ($type == 'create') {
+                $products = NoticeTruckProduct::find()->where(['notice_truck_id'=>$this->id])->all();
+
+                $control = new NoticeControl;
+                $control->date_notice = $this->noticeWaybill->date_notice;
+                $control->status = 0;
+                $control->notice_truck_id = $this->id;
+
+                if ($control->save(false)) {
+                    $notification = new Notification;
+                    $notification->user_id = Yii::$app->user->identity->id;
+                    $notification->object_id = $control->id;
+                    $notification->status = 0;
+                    $notification->status_admin = 0;
+                    $notification->message = 'Новая заявка от раздела: прием грузовика';
+                    $notification->type = 'control';
+                    $notification->save();
+                    $keys = array('notice_control_id', 'product_id', 'unit_id', 'amount', 'description', 'status');
+                    $vals = array();
+                    foreach ($products as $k => $product) {
+                        $vals[] = [
+                            'notice_control_id' => $control->id,
+                            'product_id' => $product->product_id,
+                            'unit_id' => $product->unit_id,
+                            'amount' => $product->amount_fact,
+                            'description' => $product->description,
+                            'status' => 1
+                        ];
+                    }
+
+                    Yii::$app->db->createCommand()->batchInsert('notice_control_product', $keys, $vals)->execute();
+                }
             }
 
             return true;
@@ -151,5 +175,9 @@ class NoticeTruck extends \yii\db\ActiveRecord
     public function getProvider()
     {
         return $this->hasOne(Category::className(), ['id' => 'provider_id']);
+    }
+
+    public function getNoticeControl() {
+        return $this->hasOne(NoticeControl::className(), ['notice_truck_id' => 'id']);
     }
 }

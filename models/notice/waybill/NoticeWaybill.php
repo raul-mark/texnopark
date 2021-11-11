@@ -7,6 +7,7 @@ use app\models\user\User;
 use app\models\product\Product;
 use app\models\notice\truck\NoticeTruck;
 use app\models\Category;
+use app\models\Notification;
 
 /**
  * This is the model class for table "notice_waybill".
@@ -77,50 +78,80 @@ class NoticeWaybill extends \yii\db\ActiveRecord
         ];
     }
 
-    public function saveObject() {
+    public function saveObject($type = 'create') {
         $post = Yii::$app->request->post();
 
-        $this->user_id = Yii::$app->user->identity->id;
+        if ($type = 'create') {
+            $this->user_id = Yii::$app->user->identity->id;
+        }
         $this->status = 1;
 
         if ($this->save()) {
-            $keys = array('notice_waybill_id', 'product_id', 'amount', 'description', 'status');
-            $vals = array();
-
-            foreach ($this->products['product'] as $k => $product) {
-                if ($this->products['amount'][$k]) {
-                    $vals[] = [
-                        'notice_waybill_id' => $this->id,
-                        'product_id' => $this->products['product'][$k],
-                        'amount' => $this->products['amount'][$k],
-                        'description' => $this->products['description'][$k],
-                        'status' => 1
-                    ];
+            if ($type == 'update') {
+                foreach ($this->products['product'] as $k => $product) {
+                    if ($this->products['amount'][$k]) {
+                        $pr = NoticeWaybillProduct::findOne($this->products['id'][$k]);
+                        if ($pr) {
+                            $pr->notice_waybill_id = $this->id;
+                            $pr->product_id = $this->products['product'][$k];
+                            $pr->unit_id = $this->products['unit'][$k];
+                            $pr->amount = $this->products['amount'][$k];
+                            $pr->description = $this->products['description'][$k];
+                            $pr->save();
+                        }
+                    }
                 }
             }
-            
-            Yii::$app->db->createCommand()->batchInsert('notice_waybill_product', $keys, $vals)->execute();
+            if ($type == 'create') {
+                $keys = ['notice_waybill_id', 'product_id', 'unit_id', 'amount', 'description', 'status'];
+                $vals = [];
 
-            $truck = new NoticeTruck;
-            $truck->status = 0;
-            $truck->notice_waybill_id = $this->id;
-
-            if ($truck->save(false)) {
-                $keys = array('notice_truck_id', 'product_id', 'amount', 'description', 'status');
-                $vals = array();
                 foreach ($this->products['product'] as $k => $product) {
                     if ($this->products['amount'][$k]) {
                         $vals[] = [
-                            'notice_truck_id' => $truck->id,
+                            'notice_waybill_id' => $this->id,
                             'product_id' => $this->products['product'][$k],
+                            'unit_id' => $this->products['unit'][$k],
                             'amount' => $this->products['amount'][$k],
                             'description' => $this->products['description'][$k],
                             'status' => 1
                         ];
                     }
                 }
+                
+                Yii::$app->db->createCommand()->batchInsert('notice_waybill_product', $keys, $vals)->execute();
+            
+                $truck = new NoticeTruck;
+                $truck->status = 0;
+                $truck->notice_waybill_id = $this->id;
 
-                Yii::$app->db->createCommand()->batchInsert('notice_truck_product', $keys, $vals)->execute();
+                if ($truck->save(false)) {
+                    $notification = new Notification;
+                    $notification->user_id = Yii::$app->user->identity->id;
+                    $notification->object_id = $truck->id;
+                    $notification->status = 0;
+                    $notification->status_admin = 0;
+                    $notification->message = 'Новая заявка от раздела: накладная';
+                    $notification->type = 'truck';
+                    $notification->save();
+
+                    $keys = ['notice_truck_id', 'product_id', 'unit_id', 'amount', 'description', 'status'];
+                    $vals = [];
+                    foreach ($this->products['product'] as $k => $product) {
+                        if ($this->products['amount'][$k]) {
+                            $vals[] = [
+                                'notice_truck_id' => $truck->id,
+                                'product_id' => $this->products['product'][$k],
+                                'unit_id' => $this->products['unit'][$k],
+                                'amount' => $this->products['amount'][$k],
+                                'description' => $this->products['description'][$k],
+                                'status' => 1
+                            ];
+                        }
+                    }
+
+                    Yii::$app->db->createCommand()->batchInsert('notice_truck_product', $keys, $vals)->execute();
+                }
             }
 
             return true;
@@ -162,5 +193,9 @@ class NoticeWaybill extends \yii\db\ActiveRecord
     public function getProvider()
     {
         return $this->hasOne(Category::className(), ['id' => 'provider_id']);
+    }
+
+    public function getNoticeTruck() {
+        return $this->hasOne(NoticeTruck::className(), ['notice_waybill_id' => 'id']);
     }
 }

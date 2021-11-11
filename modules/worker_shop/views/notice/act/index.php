@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-info color-palette-box">
             <div class="box-header with-border">
                 <!-- <div class="box-title pull-right" style="font-size: 14px">
-                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker/notice/waybill-create'])?>" class="btn btn-primary">
+                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/notice/waybill-create'])?>" class="btn btn-primary">
                         <i class="fa fa-pencil"></i>
                         Создать заявку
                     </a>
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <a href="javascript:;" class="btn btn-success" data-value="enable"><i class="fa fa-unlock"></i> Разблокировать</a> -->
                 </div>
             </div>
-            <div class="box-body" id="item-block">
+            <div class="box-body" id="item-block" style="overflow-x: scroll;">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <span class="fa fa-cog"></span>
                                             </button>
                                             <ul class="dropdown-menu pull-right">
-                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/notice/act-view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
+                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/notice/act-view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
                                             </ul>';
                                 }
                             ],

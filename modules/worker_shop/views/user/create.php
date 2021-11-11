@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <img src="<?=$model->getPhoto('200x200/')?>" width="200" class="photo-admin-user"/>
                                         <?php if ($model->image) {?>
                                             <br/>
-                                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker/default/remove-photo', 'id'=>$model->image->id])?>" class="edit-user remove-object"><i class="fa fa-times"></i> Удалить фото</a>
+                                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/default/remove-photo', 'id'=>$model->image->id])?>" class="edit-user remove-object"><i class="fa fa-times"></i> Удалить фото</a>
                                         <?php }?>
                                     </div>
                                 </div>

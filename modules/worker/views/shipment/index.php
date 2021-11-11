@@ -38,102 +38,100 @@ $this->params['breadcrumbs'][] = $this->title;
                     <a href="javascript:;" class="btn btn-success" data-value="enable"><i class="fa fa-unlock"></i> Разблокировать</a>
                 </div>
             </div>
-            <div class="box-body" id="item-block">
-                
-                    <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
-                        'summary' => "Страница {begin} - {end} из {totalCount} данных<br/><br/>",
-                        'emptyText' => 'Данных нет',
-                        'pager' => [
-                            'options'=>['class'=>'pagination'],
-                            'pageCssClass' => 'page-item',
-                            'prevPageLabel' => 'Назад',
-                            'nextPageLabel' => 'Вперед',
-                            'maxButtonCount'=>10,
-                            'linkOptions' => [
-                                'class' => 'page-link'
-                            ]
-                         ],
-                        'tableOptions' => [
-                            'class'=>'table table-striped'
+            <div class="box-body" id="item-block" style="overflow-x: scroll;">
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'summary' => "Страница {begin} - {end} из {totalCount} данных<br/><br/>",
+                    'emptyText' => 'Данных нет',
+                    'pager' => [
+                        'options'=>['class'=>'pagination'],
+                        'pageCssClass' => 'page-item',
+                        'prevPageLabel' => 'Назад',
+                        'nextPageLabel' => 'Вперед',
+                        'maxButtonCount'=>10,
+                        'linkOptions' => [
+                            'class' => 'page-link'
+                        ]
                         ],
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            [
-                                'class' => 'yii\grid\CheckboxColumn'
+                    'tableOptions' => [
+                        'class'=>'table table-striped'
+                    ],
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        [
+                            'class' => 'yii\grid\CheckboxColumn'
+                        ],
+                        [
+                            'attribute'=>'id',
+                            'label'=>'<i class="fa fa-sort"></i> ID',
+                            'encodeLabel' => false,
+                            'contentOptions' => [
+                                'style' => 'width:70px'
                             ],
-                            [
-                                'attribute'=>'id',
-                                'label'=>'<i class="fa fa-sort"></i> ID',
-                                'encodeLabel' => false,
-                                'contentOptions' => [
-                                    'style' => 'width:70px'
-                                ],
+                        ],
+                        [
+                            'attribute'=>'agent_id',
+                            'label'=>'<i class="fa fa-sort"></i> Агент',
+                            'encodeLabel' => false,
+                            'format' => 'html',
+                            'value' => function ($model, $key, $index, $column) {
+                                return $model->agent ? $model->agent->name : '-';
+                            }
+                        ],
+                        [
+                            'attribute'=>'type_id',
+                            'label'=>'<i class="fa fa-sort"></i> Тип отгрузки',
+                            'encodeLabel' => false,
+                            'format' => 'html',
+                            'value' => function ($model, $key, $index, $column) {
+                                return $model->shipmentType ? $model->shipmentType->name_ru : '-';
+                            }
+                        ],
+                        [
+                            'attribute'=>'fio',
+                            'label'=>'<i class="fa fa-sort"></i> Ф.И.О',
+                            'encodeLabel' => false,
+                        ],
+                        [
+                            'attribute'=>'date_shipment',
+                            'label'=>'<i class="fa fa-sort"></i> Дата отгрузки',
+                            'encodeLabel' => false,
+                        ],
+                        [
+                            'attribute'=>'status',
+                            'label'=>'<i class="fa fa-sort"></i> Статус',
+                            'encodeLabel' => false,
+                            'format' => 'html',
+                            'contentOptions' => [
+                                'style' => 'width:100px'
                             ],
-                            [
-                                'attribute'=>'agent_id',
-                                'label'=>'<i class="fa fa-sort"></i> Агент',
-                                'encodeLabel' => false,
-                                'format' => 'html',
-                                'value' => function ($model, $key, $index, $column) {
-                                    return $model->agent ? $model->agent->name : '-';
+                            'value' => function ($model, $key, $index, $column) {
+                                if ($model->status == 1) {
+                                    return '<small class="label label-success">Активный</small>';
+                                } else {
+                                    return '<small class="label label-warning">В ожидании</small>';
+                                }
+                            },
+                        ],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{view}',
+                            'buttons' => [
+                                'view' => function ($url, $model) {
+                                    return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                <span class="fa fa-cog"></span>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
+                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/create', 'id'=>$model->id]).'" class="dropdown-item">Редактировать</a></li>
+                                                <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</a></li>
+                                            </ul>';
                                 }
                             ],
-                            [
-                                'attribute'=>'type_id',
-                                'label'=>'<i class="fa fa-sort"></i> Тип отгрузки',
-                                'encodeLabel' => false,
-                                'format' => 'html',
-                                'value' => function ($model, $key, $index, $column) {
-                                    return $model->shipmentType ? $model->shipmentType->name_ru : '-';
-                                }
-                            ],
-                            [
-                                'attribute'=>'fio',
-                                'label'=>'<i class="fa fa-sort"></i> Ф.И.О',
-                                'encodeLabel' => false,
-                            ],
-                            [
-                                'attribute'=>'date_shipment',
-                                'label'=>'<i class="fa fa-sort"></i> Дата отгрузки',
-                                'encodeLabel' => false,
-                            ],
-                            [
-                                'attribute'=>'status',
-                                'label'=>'<i class="fa fa-sort"></i> Статус',
-                                'encodeLabel' => false,
-                                'format' => 'html',
-                                'contentOptions' => [
-                                    'style' => 'width:100px'
-                                ],
-                                'value' => function ($model, $key, $index, $column) {
-                                    if ($model->status == 1) {
-                                        return '<small class="label label-success">Активный</small>';
-                                    } else {
-                                        return '<small class="label label-warning">В ожидании</small>';
-                                    }
-                                },
-                            ],
-                            [
-                                'class' => 'yii\grid\ActionColumn',
-                                'template' => '{view}',
-                                'buttons' => [
-                                    'view' => function ($url, $model) {
-                                        return '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                    <span class="fa fa-cog"></span>
-                                                </button>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/create', 'id'=>$model->id]).'" class="dropdown-item">Редактировать</a></li>
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/worker/shipment/remove', 'id'=>$model->id]).'" class="dropdown-item" class="remove-object">Удалить</a></li>
-                                                </ul>';
-                                    }
-                                ],
-                            ]
-                        ],
-                    ]); ?>
-                
+                        ]
+                    ],
+                ]); ?>
             </div>
         </div>
     </section>

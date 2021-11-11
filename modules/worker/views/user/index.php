@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </a>
             </div>
             <div class="box-body">
-                <div class="grid-table">
+                <div class="grid-table" style="overflow-x: scroll;">
                     
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,

@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="box-header">
                     Продукция
                 </div>
-                <div class="box-body">
+                <div class="box-body" style="overflow-x: scroll;">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'encodeLabel' => false,
                                 'format' => 'html',
                                 'value' => function ($model, $key, $index, $column) {
-                                    return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->product->id]).'">'.$model->product->name_ru.'</a>' : '-';
+                                    return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/product/view', 'id'=>$model->product->id]).'">'.$model->product->name_ru.'</a>' : '-';
                                 },
                             ],
                             [
@@ -143,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'encodeLabel' => false,
                                 'format' => 'html',
                                 'value' => function ($model, $key, $index, $column) {
-                                    return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->product->id]).'">'.$model->product->article.'</a>' : '-';
+                                    return $model->product ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/product/view', 'id'=>$model->product->id]).'">'.$model->product->article.'</a>' : '-';
                                 },
                             ],
                             [
@@ -172,8 +172,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'template' => '{view}',
                                 'buttons' => [
                                     'view' => function ($url, $model) {
-                                        return '<a href="'.Yii::$app->urlManager->createUrl(['/worker/notice/control-accept-product', 'id'=>$model->id]).'" class="btn btn-success"><i class="fa fa-check"></i></a></li>
-                                                <a href="'.Yii::$app->urlManager->createUrl(['/worker/notice/control-decline-product', 'id'=>$model->id]).'" class="btn btn-danger"><i class="fa fa-remove"></i></a></li>';
+                                        return '<a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/notice/control-accept-product', 'id'=>$model->id]).'" class="btn btn-success"><i class="fa fa-check"></i></a></li>
+                                                <a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/notice/control-decline-product', 'id'=>$model->id]).'" class="btn btn-danger"><i class="fa fa-remove"></i></a></li>';
                                     }
                                 ],
                             ]
@@ -182,7 +182,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <?php if ($model->status == 0) {?>
                     <div class="box-footer">
-                        <a href="<?=Yii::$app->urlManager->createUrl(['/worker/notice/control-accept', 'id'=>$model->id]);?>" class="btn btn-success">Подтвердить</a>
+                        <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/notice/control-accept', 'id'=>$model->id]);?>" class="btn btn-success">Подтвердить</a>
                     </div>
                 <?php }?>
             </div>

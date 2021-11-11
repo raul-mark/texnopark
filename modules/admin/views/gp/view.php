@@ -22,13 +22,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?=Yii::$app->session->getFlash('gp_saved');?>
             </div>
         <?php }?>
+        <?php if (Yii::$app->session->hasFlash('gp_industry_saved')) {?>
+            <div class="alert alert-success text-center">
+                <?=Yii::$app->session->getFlash('gp_industry_saved');?>
+            </div>
+        <?php }?>
         <div class="row">
             <div class="col-sm-3">
                 <?=AdminGpMenu::widget();?>
             </div>
             <div class="col-sm-9">
                 <?php if ($model) {?>
-                    <div class="box">
+                    <div class="box box-info color-palette-box">
                         <div class="box-header">
                             <div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                 <span class="fa fa-cog"></span>

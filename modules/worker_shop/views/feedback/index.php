@@ -88,8 +88,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         <span class="fas fa-cog"></span>
                                                     </button>
                                                     <div class="dropdown-menu" x-placement="bottom-start">
-                                                        <a href="'.Yii::$app->urlManager->createUrl(['/admin/feedback/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a>
-                                                        <a href="'.Yii::$app->urlManager->createUrl(['/admin/feedback/remove', 'id'=>$model->id]).'" class="dropdown-item remove-object">Удалить</a>
+                                                        <a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/feedback/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a>
+                                                        <a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/feedback/remove', 'id'=>$model->id]).'" class="dropdown-item remove-object">Удалить</a>
                                                     </div>';
                                         }
                                     ],

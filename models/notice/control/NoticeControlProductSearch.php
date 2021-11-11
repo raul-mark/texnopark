@@ -18,8 +18,8 @@ class NoticeControlProductSearch extends NoticeControlProduct
     public function rules()
     {
         return [
-            [['id', 'notice_control_id', 'product_id', 'sort', 'status'], 'integer'],
-            [['amount'], 'number'],
+            [['id', 'notice_control_id', 'product_id', 'unit_id', 'sort', 'status'], 'integer'],
+            [['amount', 'percentage', 'amount_passed', 'amount_defect'], 'number'],
             [['date'], 'safe'],
             [['description'], 'string'],
         ];
@@ -65,6 +65,8 @@ class NoticeControlProductSearch extends NoticeControlProduct
             'notice_control_id' => $this->notice_control_id,
             'product_id' => $this->product_id,
             'amount' => $this->amount,
+            'percentage' => $this->percentage,
+            'amount_passed' => $this->amount_passed,
             'date' => $this->date,
             'sort' => $this->sort,
             'status' => $this->status,

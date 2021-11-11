@@ -34,11 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php if ($alerts) {?>
                                 <?php foreach ($alerts as $key => $alert) {?>
                                     <div class="alert alert-warning" style="margin-bottom:10px">
-                                        <a href="<?=Yii::$app->urlManager->createUrl(['/admin/notification/remove', 'id'=>$alert->id])?>" class="pull-right remove-object"><i class="glyphicon glyphicon-trash"></i> Удалить</a>
+                                        <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/notification/remove', 'id'=>$alert->id])?>" class="pull-right remove-object"><i class="glyphicon glyphicon-trash"></i> Удалить</a>
                                         <?php if ($alert->type == 'order') {?>
                                             <strong>Новый заказ</strong>
                                             <br/>
-                                            <a href="<?=Yii::$app->urlManager->createUrl(['/admin/pharmacy/view', 'id'=>$alert->order->pharmacy->id])?>"><strong>Аптека: <?=$alert->order->pharmacy->name ? $alert->order->pharmacy->name : '';?></strong></a><br/>
+                                            <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/pharmacy/view', 'id'=>$alert->order->pharmacy->id])?>"><strong>Аптека: <?=$alert->order->pharmacy->name ? $alert->order->pharmacy->name : '';?></strong></a><br/>
                                             Имя: <?=$alert->order->name ? $alert->order->name : '';?><br/>
                                             Телефон: <?=$alert->order->contacts ? $alert->order->contacts : '';?>
                                             <hr/>
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     <span style="font-size:12px"><i class="glyphicon glyphicon-time"></i> <?=$alert->date;?></span>
                                                 </div>
                                                 <div class="col-sm-6 text-right">
-                                                    <a href="<?=Yii::$app->urlManager->createUrl(['/admin/pharmacy/order-view', 'id'=>$alert->order->pharmacy_id, 'order_id'=>$alert->order->id])?>" class="btn btn-info pull-right">Посмотреть заказ</a>
+                                                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/pharmacy/order-view', 'id'=>$alert->order->pharmacy_id, 'order_id'=>$alert->order->id])?>" class="btn btn-info pull-right">Посмотреть заказ</a>
                                                 </div>
                                             </div>
                                         <?php }?>

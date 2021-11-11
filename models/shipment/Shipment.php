@@ -36,7 +36,7 @@ class Shipment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'sort', 'type_id', 'agent_id'], 'integer'],
+            [['status', 'sort'], 'integer'],
             [['date', 'products'], 'safe'],
             [['date_shipment', 'fio'], 'string', 'max' => 255],
             [['comment'], 'string']
@@ -63,7 +63,7 @@ class Shipment extends \yii\db\ActiveRecord
         if ($this->save()) {
             $products = ShipmentProduct::deleteAll(['shipment_id'=>$this->id]);
 
-            $keys = array('shipment_id', 'product_id', 'amount', 'article', 'tnvd_code');
+            $keys = array('shipment_id', 'product_id', 'amount', 'article');
             $vals = array();
 
             foreach ($this->products['product'] as $k => $product) {
@@ -72,7 +72,6 @@ class Shipment extends \yii\db\ActiveRecord
                     'product_id' => $product,
                     'amount' => $this->products['amount'][$k],
                     'article' => $this->products['article'][$k],
-                    'tnvd_code' => $this->products['tnvd_code'][$k] ? $this->products['tnvd_code'][$k] : null
                 ];
             }
             Yii::$app->db->createCommand()->batchInsert('shipment_product', $keys, $vals)->execute();

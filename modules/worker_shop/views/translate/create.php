@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card">
             <div class="card-header">
                 <div class="pull-right">
-                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker/translate/']);?>" class="btn btn-primary">
+                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/translate/']);?>" class="btn btn-primary">
                         <i class="fa fa-eye"></i> Посмотреть перевод
                     </a>
                 </div>

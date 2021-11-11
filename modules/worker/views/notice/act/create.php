@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </section>
     <section class="content">
         <?php $form = ActiveForm::begin(); ?>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Данные
                 </div>
@@ -91,24 +91,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="product-block">
                             <div class="box">
                                 <!-- <div class="box-header"><a href="javascript:;" class="btn btn-danger remove-block-product"><i class="fa fa-trash"></i> Удалить</a></div> -->
-                                <div class="box-body">
+                                <div class="box-body box-info color-palette-box">
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <?=$form->field($model, 'products[product][]')->dropDownList($products, ['prompt'=>'Выберите продукт по названию', 'class'=>'select-drop select-drop-name form-control', 'options'=>[$product->product_id=>['selected'=>'selected']]])->label('Список продуктов (название)');?>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <?=$form->field($model, 'products[article][]')->dropDownList($articles, ['prompt'=>'Выберите продукт по артикулу', 'class'=>'select-drop select-drop-article form-control', 'options'=>[$product->product_id=>['selected'=>'selected']]])->label('Список продуктов (артикул)');?>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <?=$form->field($model, 'products[amount][]')->textInput()->input('text', ['placeholder'=>'Введите кол-во', 'class'=>'form-control price-sale', 'value'=>$product->amount])->label('Кол-во');?>
+                                        <div class="col-sm-3">
+                                            <?=$form->field($model, 'products[amount][]')->textInput()->input('text', ['placeholder'=>'Введите кол-во', 'class'=>'form-control price-sale', 'value'=>$product->amount_passed])->label('Кол-во');?>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <?=$form->field($model, 'products[unit][]')->dropDownList($units, ['prompt'=>'Выберите ед. измерения', 'class'=>'select-drop select-drop-unit form-control', 'options'=>[$product->unit_id=>['selected'=>'selected']]])->label('Еденица измерения');?>
                                         </div>
                                     </div>
-                                    <?=$form->field($model, 'products[description]')->textarea(['rows' => '6', 'value'=>$product->description])->label('Описание'); ?>
+                                    
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <?=$form->field($model, 'products[stock_id][]')->dropDownList($stocks, ['prompt'=>'Выберите склад', 'class'=>'select-drop select-drop-stock form-control', 'options'=>[$product->stock_id=>['selected'=>'selected']]])->label('Склады');?>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label class="control-label">Номер стелажа</label>
                                                 <select name="NoticeAct[products][stack_id][]" class="form-control select-drop-stack" style="margin-top">
@@ -119,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label class="control-label">Номер ячейки</label>
                                                 <select name="NoticeAct[products][shelf_id][]" class="form-control select-drop-stack" style="margin-top">
@@ -130,12 +133,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-3">
                                             <?=$form->field($model, 'products[weight][]')->textInput()->input('text', ['placeholder'=>'Введите вес', 'class'=>'form-control price-sale', 'value'=>$product->weight])->label('Вес');?>
                                         </div>
                                     </div>
+                                    <?=$form->field($model, 'products[description]')->textarea(['rows' => '6', 'value'=>$product->description])->label('Описание'); ?>
                                 </div>
                             </div>
                         </div>

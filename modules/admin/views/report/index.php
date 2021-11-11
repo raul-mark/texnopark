@@ -5,7 +5,9 @@ use yii\widgets\Pjax;
 use yii\widgets\LinkPager;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Отгрузка';
+use app\widgets\admin_report_menu\AdminReportMenu;
+
+$this->title = 'Отчетность';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -24,9 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?=Yii::$app->session->getFlash('shipment_removed');?>
             </div>
         <?php }?>
-        <div class="box">
-            <div class="box-body" id="item-block">
-                <div class="alert alert-danger text-center">Раздел на стадии разработки</div>
+        <div class="row">
+            <div class="col-sm-3">
+                <?=AdminReportMenu::widget();?>
+            </div>
+            <div class="col-sm-9">
+                <div class="box">
+                    <div class="box-body" id="item-block">
+                        <div class="alert alert-info text-center">Выберите тип отчетности</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

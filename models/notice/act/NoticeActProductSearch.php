@@ -18,8 +18,8 @@ class NoticeActProductSearch extends NoticeActProduct
     public function rules()
     {
         return [
-            [['id', 'notice_act_id', 'product_id', 'sort', 'status'], 'integer'],
-            [['amount'], 'number'],
+            [['id', 'notice_act_id', 'unit_id', 'product_id', 'sort', 'status'], 'integer'],
+            [['amount', 'percentage', 'amount_passed', 'amount_defect'], 'number'],
             [['date'], 'safe'],
             [['description'], 'string'],
         ];
@@ -65,6 +65,8 @@ class NoticeActProductSearch extends NoticeActProduct
             'notice_act_id' => $this->notice_act_id,
             'product_id' => $this->product_id,
             'amount' => $this->amount,
+            'percentage' => $this->percentage,
+            'amount_passed' => $this->amount_passed,
             'date' => $this->date,
             'sort' => $this->sort,
             'status' => $this->status,

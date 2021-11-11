@@ -1,4 +1,6 @@
 <?php
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
 
 use app\widgets\admin_language_tab\AdminLanguageTab;
 use app\widgets\admin_product_menu\AdminProductMenu;
@@ -22,6 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?=Yii::$app->session->getFlash('product_saved');?>
             </div>
         <?php }?>
+        <?php if (Yii::$app->session->hasFlash('product_added_shop')) {?>
+            <div class="alert alert-success text-center">
+                <?=Yii::$app->session->getFlash('product_added_shop');?>
+            </div>
+        <?php }?>
+        <?php if (Yii::$app->session->hasFlash('product_removed_shop')) {?>
+            <div class="alert alert-success text-center">
+                <?=Yii::$app->session->getFlash('product_removed_shop');?>
+            </div>
+        <?php }?>
         <?php if (Yii::$app->session->hasFlash('defect_setted')) {?>
             <div class="alert alert-success text-center">
                 <?=Yii::$app->session->getFlash('defect_setted');?>
@@ -38,13 +50,19 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-sm-9">
                 <?php if ($model) {?>
-                    <div class="box">
+                    <div class="box box-info color-palette-box">
                         <div class="box-header">
                             <?php if ($model->status == 1) {?>
                                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/set-defect', 'id'=>$model->id]);?>" class="btn btn-danger">Переместить в дефект</a>
                             <?php }?>
                             <?php if ($model->status == 2) {?>
                                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/unset-defect', 'id'=>$model->id]);?>" class="btn btn-success">Вытащить из дефекта</a>
+                            <?php }?>
+
+                            <?php if ($model->shopProduct) {?>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/remove-shop', 'id'=>$model->id]);?>" class="btn btn-warning"> Удалить из магазина</a>
+                            <?php } else {?>
+                                <a href="javascript:;" class="btn btn-success" data-toggle="modal" data-target="#add-shop"> Добавить в магазин</a>
                             <?php }?>
 
                             <div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -95,20 +113,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Регион:</td>
-                                    <td><?=$model->region ? $model->region->name_ru : '-';?></td>
-                                </tr>
-                                <tr>
                                     <td>Производитель:</td>
                                     <td><?=$model->manufacturer ? $model->manufacturer->name_ru : '-';?></td>
                                 </tr>
                                 <tr>
                                     <td>Еденица измерения:</td>
                                     <td><?=$model->unit ? $model->unit->name_ru : '-';?></td>
-                                </tr>
-                                <tr>
-                                    <td>Цена:</td>
-                                    <td><?=$model->price_sale ? $model->price_sale : '-';?></td>
                                 </tr>
                             </table>
                             <br/>
@@ -121,3 +131,80 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </section>
 </div>
+
+<div class="modal fade" id="add-shop">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Добавить в магазин</h4>
+            </div>
+            <?php $form = ActiveForm::begin(); ?>
+                <div class="modal-body">
+                    <?=$form->field($shop, 'product_id')->hiddenInput(['value'=>$model->id])->label(false);?>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Номер этажа</label>
+                                <select name="ShopProduct[shop_stack_id]" class="form-control select-drop-stack" style="margin-top">
+                                    <option value="">Выбрать этаж</option>
+                                    <?php foreach ($stacks as $stack_key => $stack) {?>
+                                        <option value="<?=$stack_key;?>"><?=$stack;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Номер ячейки</label>
+                                <select name="ShopProduct[shop_stack_shelving_id]" class="form-control select-drop-stack" style="margin-top">
+                                    <option value="">Выбрать ячейку</option>
+                                    <!-- <?php foreach ($shelvings as $shef_key => $shelf) {?>
+                                        <option value="<?=$shelf_key;?>"><?=$shelf;?></option>
+                                    <?php }?> -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <?=$form->field($shop, 'amount')->textInput()->input('text', ['placeholder'=>'Введите кол-во', 'class'=>'form-control'])->label('Кол-во');?>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default pull-left" data-dismiss="modal">Закрыть</a>
+                    <?=Html::submitButton('<i class="fa fa-check-square-o"></i> Сохранить', ['class'=>'btn btn-primary']);?>
+                </div>
+            <?php ActiveForm::end();?>
+        </div>
+    </div>
+</div>
+
+<?php
+$script = <<<JS
+    $(document).on('change', '.select-drop-stack', function() {
+        var id = $(this).val();
+        var block = $(this).parent().parent().next().find('select');
+        block.html('');
+
+        if (id) {
+            $.ajax({
+                url: '/admin/shop/get-shelvings',
+                type: 'post',
+                data: {'id':id},
+                success: function(data) {
+                    if (data && data['data']) {
+                        block.append('<option value="">Выбрать ячейку</option>');
+                        for (var i in data['data']) {
+                            block.append('<option value="'+data['data'][i]['id']+'">'+data['data'][i]['shelf_number']+'</option>');
+                        }
+                    }
+                }
+            });
+        }
+
+        return false;
+    });
+JS;
+
+$this->registerJs($script);
+?>

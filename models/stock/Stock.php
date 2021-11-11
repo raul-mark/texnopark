@@ -5,6 +5,7 @@ namespace app\models\stock;
 use Yii;
 use app\models\user\User;
 use app\models\product\Product;
+use app\models\stack\Stack;
 
 /**
  * This is the model class for table "stock".
@@ -159,5 +160,10 @@ class Stock extends \yii\db\ActiveRecord
 
     public function getUser() {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getStacks()
+    {
+        return $this->hasMany(Stack::className(), ['stock_id' => 'id']);
     }
 }

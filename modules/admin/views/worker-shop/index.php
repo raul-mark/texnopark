@@ -20,14 +20,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (Yii::$app->session->hasFlash('worker_shop_removed')) {?>
             <div class="alert alert-success text-center"><?=Yii::$app->session->getFlash('worker_shop_removed');?></div>
         <?php }?>
-        <div class="box">
+        <div class="box box-info color-palette-box">
             <div class="box-header">
                 <div class="pull-right">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/worker-shop/create'])?>" class="btn btn-primary"><i class="fa fa-plus"></i> Добавить сотрудника</a>
                 </div>
             </div>
             <div class="box-body">
-                <div class="grid-table">
+                <div class="grid-table" style="overflow-x: scroll;">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,

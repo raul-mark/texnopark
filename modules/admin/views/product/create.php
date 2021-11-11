@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="alert alert-success text-center alert-bottom"><?=Yii::$app->session->getFlash('photo_removed');?></div>
         <?php }?>
         <?php $form = ActiveForm::begin(); ?>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Данные товара
                 </div>
@@ -41,18 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <?=$form->field($model, 'region_id')->dropDownList($regions, ['class'=>'select-drop form-control', 'prompt'=>'Выберите регион'])->label('Регион');?>
+                            <?//=$form->field($model, 'price_sale')->textInput()->input('text', ['placeholder'=>'Введите цену', 'class'=>'form-control'])->label('Цена');?>
                         </div>
                         <div class="col-sm-6">
-                            <?=$form->field($model, 'category_id')->dropDownList($categories, ['class'=>'select-drop form-control', 'prompt'=>'Выберите категорию'])->label('Категории');?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <?=$form->field($model, 'price_sale')->textInput()->input('text', ['placeholder'=>'Введите цену', 'class'=>'form-control'])->label('Цена');?>
-                        </div>
-                        <div class="col-sm-6">
-                            <?=$form->field($model, 'amount')->textInput()->input('text', ['placeholder'=>'Введите количество', 'class'=>'form-control'])->label('Количество');?>
+                            <?//=$form->field($model, 'amount')->textInput()->input('text', ['placeholder'=>'Введите количество', 'class'=>'form-control'])->label('Количество');?>
                         </div>
                     </div>
                     <div class="row">
@@ -61,6 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-sm-6">
                             <?=$form->field($model, 'unit_id')->dropDownList($units, ['class'=>'select-drop form-control'])->label('Еденица измерения');?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <?=$form->field($model, 'category_id')->dropDownList($categories, ['class'=>'select-drop form-control', 'prompt'=>'Выберите категорию'])->label('Категории');?>
                         </div>
                     </div>
                     <div class="row">
@@ -78,9 +75,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
                 </div>
-                
+                <div class="box-footer">
+                    <?=Html::submitButton('<i class="fa fa-check"></i> Сохранить', ['class'=>'btn btn-primary']);?>
+                </div>
             </div>
-            <div class="box">
+            <div class="box box-info color-palette-box">
                 <div class="box-header">
                     Склад
                 </div>
@@ -120,7 +119,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end();?>
     </section>
 </div>
-
 
 <?php
 $script = <<<JS

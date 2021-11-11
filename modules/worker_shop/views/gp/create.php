@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <img src="<?=$model->getPhoto('200x200/')?>" width="200" class="photo-stock-user"/>
                                 <?php if ($model->image) {?>
                                     <br/>
-                                    <a href="<?=Yii::$app->urlManager->createUrl(['/admin/default/remove-photo', 'id'=>$model->image->id])?>" class="edit-user remove-object"><i class="fa fa-times"></i> Удалить фото</a>
+                                    <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/default/remove-photo', 'id'=>$model->image->id])?>" class="edit-user remove-object"><i class="fa fa-times"></i> Удалить фото</a>
                                 <?php }?>
                             </div>
                         </div>
@@ -133,7 +133,7 @@ $script = <<<JS
 
         if (id) {
             $.ajax({
-                url: '/admin/product/get-stacks',
+                url: '/worker_shop/product/get-stacks',
                 type: 'post',
                 data: {'id':id},
                 success: function(data) {
@@ -157,7 +157,7 @@ $script = <<<JS
 
         if (id) {
             $.ajax({
-                url: '/admin/product/get-shelvings',
+                url: '/worker_shop/product/get-shelvings',
                 type: 'post',
                 data: {'id':id},
                 success: function(data) {

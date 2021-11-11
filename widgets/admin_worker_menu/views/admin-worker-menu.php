@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use app\models\user\User;
 ?>
 
-<div class="box">
+<div class="box box-info color-palette-box">
     <div class="box-body">
     	<img src="<?=$model->getPhoto('250x250');?>" width="100%" class="img-thumbnail"/>
         <ul class="company-left-menu">

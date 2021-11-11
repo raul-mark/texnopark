@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -27,24 +27,51 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if ($stocks) {?>
             <div class="row">
                 <?php foreach ($stocks as $stock) {?>
-                    <div class="col-sm-3">
+                  <div class="col-sm-3">
                         <div class="box box-warning color-palette-box">
                             <div class="box-header with-border">
                                 <?=$stock->name_ru;?>
                             </div>
                             <div class="box-body text-center">
                                 <div class="sparkline" data-type="pie" data-offset="90" data-width="200px" data-height="200px">
-                                    <?php $taken = 100 - count($stock->products);?>
-                                    <?=round($taken);?>, <?=100 - $taken;?>
+                                    <?php if ($stock->stacks) {?>
+                                        <?php foreach ($stock->stacks as $k => $stack) {?>
+                                            <?php $total = 0;?>
+                                            <?php if ($stack->products) {?>
+                                                <?php foreach ($stack->products as $pr) {?>
+                                                    <?php $total += $pr->amount;?>
+                                                <?php }?>
+                                            <?php }?>
+                                            <?=$total.',';?>
+                                        <?php }?>
+                                    <?php } ?>
+                                    <?php if (!$stock->products) {?>
+                                        1
+                                    <?php }?>
+                                    <?php $taken = round(100 - count($stock->products));?>
                                 </div>
                                 <hr/>
-                                <div class="text-left">
-                                    <div style="width:20px; height:20px; background-color:blue; float:left"></div> <span style="margin-left:10px">Свободно: <?=round($taken);?>%</span>
-                                    <div style="margin-top:10px"><div style="width:20px; height:20px; background-color:red; float:left;"></div> <span style="margin-left:10px">Занято: <?=100 - $taken;?>%</span></div>
-                                </div>
+                                <table class="table">
+                                    <tr>
+                                        <td align="left">Свободно:</td>
+                                        <td><span class="label label-success"><?=$taken;?>%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Занято:</td>
+                                        <td><span class="label label-success"><?=100 - $taken;?>%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Кол-во полок:</td>
+                                        <td><span class="label label-success"><?=count($stock->stacks);?></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">Кол-во продуктов:</td>
+                                        <td><span class="label label-success"><?=count($stock->products);?></span></td>
+                                    </tr>
+                                </table>
                             </div>
                             <div class="box-footer">
-                                <a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/stacks', 'id'=>$stock->id]);?>" class="btn btn-info" style="width:100%">Посмотреть</a>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/stacks', 'id'=>$stock->id]);?>" class="btn btn-info" style="width:100%">Посмотреть</a>
                             </div>
                         </div>
                     </div>

@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab"><strong>Личные данные</strong></a></li>
-                            <li><a href="#tab_2" data-toggle="tab"><strong>Доступ</strong></a></li>
+                            <!-- <li><a href="#tab_2" data-toggle="tab"><strong>Доступ</strong></a></li> -->
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab_1">

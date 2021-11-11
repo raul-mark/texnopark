@@ -320,4 +320,31 @@ $(function() {
             $('#shelf-blocks').append('<input type="text" class="form-control" name="Stack[shelfs][]" placeholder="Введите номер полки" aria-required="true"><br/>')
         }
     });
+
+    $('#shop-shelfs-count').on('input', function() {
+        var count = $(this).val();
+        $('#shelf-blocks').html('');
+
+        for(var i = 0; i < count; i++) {
+            $('#shelf-blocks').append('<input type="text" class="form-control" name="ShopStack[shelfs][]" placeholder="Введите номер полки" aria-required="true"><br/>')
+        }
+    });
+
+    $('.slider').slider();
+
+    $(document).on('change', '.select-drop-name', function() {
+        if ($(this).parent().parent().next().find('select').val() == '') {
+            $(this).parent().parent().next().find('select').val($(this).val()).trigger('change');
+        }
+
+        return false;
+    });
+
+    $(document).on('change', '.select-drop-article', function() {
+        if ($(this).parent().parent().prev().find('select').val() == '') {
+            $(this).parent().parent().prev().find('select').val($(this).val()).trigger('change');
+        }
+
+        return false;
+    });
 });

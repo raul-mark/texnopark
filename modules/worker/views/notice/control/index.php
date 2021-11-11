@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <a href="javascript:;" class="btn btn-success" data-value="enable"><i class="fa fa-unlock"></i> Разблокировать</a> -->
                 </div>
             </div>
-            <div class="box-body" id="item-block">
+            <div class="box-body" id="item-block" style="overflow-y: auto;">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
@@ -117,6 +117,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($model, $key, $index, $column) {
                                 if ($model->status == 1) {
                                     return '<small class="label label-success">Активный</small>';
+                                } else if ($model->status == 2) {
+                                    return '<small class="label label-danger">NG</small>';
                                 } else {
                                     return '<small class="label label-danger">Не обработан</small>';
                                 }

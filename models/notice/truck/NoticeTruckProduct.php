@@ -4,6 +4,7 @@ namespace app\models\notice\truck;
 
 use Yii;
 use app\models\product\Product;
+use app\models\Category;
 
 /**
  * This is the model class for table "notice_truck_product".
@@ -35,9 +36,9 @@ class NoticeTruckProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['notice_truck_id', 'product_id', 'sort', 'status'], 'integer'],
-            [['description'], 'string'],
-            [['amount'], 'number'],
+            [['notice_truck_id', 'product_id', 'unit_id', 'sort', 'status'], 'integer'],
+            [['description', 'description_fact'], 'string'],
+            [['amount', 'amount_fact'], 'number'],
             [['date'], 'safe'],
             [['notice_truck_id'], 'exist', 'skipOnError' => true, 'targetClass' => NoticeTruck::className(), 'targetAttribute' => ['notice_truck_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
@@ -78,5 +79,10 @@ class NoticeTruckProduct extends \yii\db\ActiveRecord
     public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    public function getUnit()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'unit_id']);
     }
 }

@@ -14,6 +14,7 @@ use app\models\stack\Stack;
 use app\models\stack\StackShelving;
 use app\models\product\Product;
 use app\models\product\ProductSearch;
+use app\models\shop\ShopStackShelving;
 use app\models\Category;
 
 class ProductController extends Controller{
@@ -161,7 +162,7 @@ class ProductController extends Controller{
 
     public function actionGetShelvings() {
         if (Yii::$app->request->isAjax && ($data = Yii::$app->request->post())) {
-            $shelfs = StackShelving::find()->where(['stack_id'=>$data['id']])->all();
+            $shelfs = ShopStackShelving::find()->where(['shop_stack_id'=>$data['id']])->all();
 
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ['data'=>$shelfs];

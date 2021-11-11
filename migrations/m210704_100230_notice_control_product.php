@@ -17,6 +17,8 @@ class m210704_100230_notice_control_product extends Migration
             'notice_control_id' => $this->integer(),
             'product_id' => $this->integer(),
             'amount' => $this->double(),
+            'percentage' => $this->double(),
+            'amount_passed' => $this->double(),
             'description' => $this->text(),
             'date' => $this->timestamp(),
             'sort' => $this->integer()->notNull()->defaultValue(0),

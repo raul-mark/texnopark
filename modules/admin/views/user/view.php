@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?=AdminUserMenu::widget();?>
                 </div>
                 <div class="col-sm-9">
-                    <div class="box">
+                    <div class="box box-info color-palette-box">
                         <div class="box-body">
                             <div class="nav-tabs-custom">
                                 <ul class="nav nav-tabs">

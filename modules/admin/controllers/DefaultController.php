@@ -35,6 +35,9 @@ class DefaultController extends Controller{
             if ($this->user->role == User::ROLE_WORKER && $action->id == 'index') {
                 return $this->redirect(['/worker/default/dashboard']);
             }
+            if ($this->user->role == User::ROLE_WORKER_SHOP && $action->id == 'index') {
+                return $this->redirect(['/worker_shop/default/dashboard']);
+            }
         }
 
         return parent::beforeAction($action);
@@ -52,6 +55,9 @@ class DefaultController extends Controller{
                 }
                 if ($user->role == User::ROLE_WORKER) {
                     return $this->redirect("/worker/default/dashboard");
+                }
+                if ($user->role == User::ROLE_WORKER_SHOP) {
+                    return $this->redirect("/worker_shop/default/dashboard");
                 }
             }
         }

@@ -10,7 +10,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="login-box">
     <div class="login-box-body">
         <div class="text-center">
-            <img src="/assets_files/img/texno_logo.png" width="100"/>
+            <!-- <img src="/assets_files/img/texno_logo.png" width="100"/> -->
+            <h1>TEXNOPARK</h1>
         </div>
         <br/>
         <?php $form = ActiveForm::begin();?>

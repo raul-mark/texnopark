@@ -10,6 +10,7 @@ use app\models\Category;
 use app\models\stock\Stock;
 use app\models\stack\Stack;
 use app\models\stack\StackShelving;
+use app\models\shop\ShopProduct;
 
 use moonland\phpexcel\Excel;
 
@@ -219,5 +220,10 @@ class Product extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    public function getShopProduct()
+    {
+        return $this->hasOne(ShopProduct::className(), ['product_id' => 'id']);
     }
 }

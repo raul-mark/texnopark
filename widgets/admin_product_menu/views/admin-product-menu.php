@@ -9,7 +9,7 @@ use app\models\user\User;
 ?>
 
 <?php if (($user->role == User::ROLE_ADMIN) || ($user->role == User::ROLE_MODERATOR)) {?>
-    <div class="box">
+    <div class="box box-info color-palette-box">
         <div class="box-body">
             <div class="text-center">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/admin/product/view', 'id'=>$model->id])?>">
@@ -25,7 +25,7 @@ use app\models\user\User;
 <?php }?>
 
 <?php if ($user->role == User::ROLE_WORKER) {?>
-    <div class="box">
+    <div class="box box-info color-palette-box">
         <div class="box-body">
             <div class="text-center">
                 <a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/view', 'id'=>$model->id])?>">
@@ -36,6 +36,22 @@ use app\models\user\User;
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/create', 'id'=>$model->id])?>" class="btn btn-primary width-full">Редактировать</a></li>
                 <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/remove', 'id'=>$model->id])?>" class="btn btn-danger width-full remove-object">Удалить</a></li>
             </ul> -->
+        </div>
+    </div>
+<?php }?>
+
+<?php if ($user->role == User::ROLE_WORKER_SHOP) {?>
+    <div class="box box-info color-palette-box">
+        <div class="box-body">
+            <div class="text-center">
+                <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/view', 'id'=>$model->id])?>">
+                    <img class="profile-user-img img-responsive" src="<?=$model->getPhoto();?>" width="70%">
+                </a>
+            </div>
+            <ul class="company-left-menu">
+                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/create', 'id'=>$model->id])?>" class="btn btn-primary width-full">Редактировать</a></li>
+                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/remove', 'id'=>$model->id])?>" class="btn btn-danger width-full remove-object">Удалить</a></li>
+            </ul>
         </div>
     </div>
 <?php }?>

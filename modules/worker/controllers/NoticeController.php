@@ -10,6 +10,7 @@ use yii\web\UploadedFile;
 use app\models\user\User;
 use app\models\product\Product;
 use app\models\Category;
+use app\models\Notification;
 use app\models\notice\waybill\NoticeWaybill;
 use app\models\notice\waybill\NoticeWaybillSearch;
 use app\models\notice\waybill\NoticeWaybillProduct;
@@ -93,12 +94,14 @@ class NoticeController extends Controller{
         $providers = ArrayHelper::map(Category::find()->where(['type'=>'provider'])->all(), 'id', 'name_ru');
         $products = ArrayHelper::map(Product::find()->all(), 'id', 'name_ru');
         $articles = ArrayHelper::map(Product::find()->all(), 'id', 'article');
+        $units = ArrayHelper::map(Category::find()->where(['type'=>'unit'])->all(), 'id', 'name_ru');
 
         return $this->render('waybill/create', [
             'model' => $model,
             'providers' => $providers,
             'products' => $products,
-            'articles' => $articles
+            'articles' => $articles,
+            'units' => $units
         ]);
     }
 
@@ -107,7 +110,7 @@ class NoticeController extends Controller{
 
         $searchModel = new NoticeWaybillProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->with('product')->andWhere(['notice_waybill_id' => $id]);
+        $dataProvider->query->with('product', 'unit')->andWhere(['notice_waybill_id' => $id]);
 
         $dataProvider->setSort([
             'defaultOrder' => [
@@ -164,13 +167,15 @@ class NoticeController extends Controller{
 
         $searchModel = new NoticeTruckProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->with('product')->andWhere(['notice_truck_id' => $id]);
+        $dataProvider->query->with('product', 'unit')->andWhere(['notice_truck_id' => $id]);
 
         $dataProvider->setSort([
             'defaultOrder' => [
                 'id' => 'desc'
             ]
         ]);
+
+        $products = NoticeTruckProduct::find()->with('product', 'unit')->where(['notice_truck_id'=>$id])->all();
 
         $truck = NoticeTruck::findOne($id);
 
@@ -181,11 +186,18 @@ class NoticeController extends Controller{
             }
         }
 
+        $notification = Notification::findOne(['object_id'=>$id, 'type'=>'truck']);
+        if ($notification) {
+            $notification->status = 1;
+            $notification->save(false);
+        }
+
         return $this->render('truck/view', [
             'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'truck' => $truck
+            'truck' => $truck,
+            'products' => $products
         ]);
     }
 
@@ -231,7 +243,7 @@ class NoticeController extends Controller{
 
         $searchModel = new NoticeControlProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->with('product')->andWhere(['notice_control_id' => $id]);
+        $dataProvider->query->with('product', 'unit')->andWhere(['notice_control_id' => $id]);
 
         $dataProvider->setSort([
             'defaultOrder' => [
@@ -239,10 +251,31 @@ class NoticeController extends Controller{
             ]
         ]);
 
+        $products = NoticeControlProduct::find()->with('product')->where(['notice_control_id'=>$id])->all();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->saveObject()) {
+                Yii::$app->session->setFlash('control_notice_accepted', 'Данные успешно сохранены');
+                if ($model->button == 'ok') {
+                    return $this->redirect(['/worker/notice/control']);
+                }
+                if ($model->button == 'ng') {
+                    return $this->redirect(Yii::$app->request->referrer);
+                }
+            }
+        }
+
+        $notification = Notification::findOne(['object_id'=>$id, 'type'=>'control']);
+        if ($notification) {
+            $notification->status = 1;
+            $notification->save(false);
+        }
+
         return $this->render('control/view', [
             'model' => $model,
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
+            'products' => $products
         ]);
     }
 
@@ -323,13 +356,19 @@ class NoticeController extends Controller{
 
         $searchModel = new NoticeActProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->with('product')->andWhere(['notice_act_id' => $id]);
+        $dataProvider->query->with('product', 'unit')->andWhere(['notice_act_id' => $id])->andWhere(['status'=>1]);
 
         $dataProvider->setSort([
             'defaultOrder' => [
                 'id' => 'desc'
             ]
         ]);
+
+        $notification = Notification::findOne(['object_id'=>$id, 'type'=>'act']);
+        if ($notification) {
+            $notification->status = 1;
+            $notification->save(false);
+        }
 
         return $this->render('act/view', [
             'model' => $model,
@@ -354,6 +393,7 @@ class NoticeController extends Controller{
         $stocks = ArrayHelper::map(Stock::find()->all(), 'id', 'name_ru');
         $stacks = ArrayHelper::map(Stack::find()->all(), 'id', 'stack_number');
         $shelvings = ArrayHelper::map(StackShelving::find()->all(), 'id', 'shelf_number');
+        $units = ArrayHelper::map(Category::find()->where(['type'=>'unit'])->all(), 'id', 'name_ru');
 
         return $this->render('act/create', [
             'model' => $model,
@@ -362,7 +402,8 @@ class NoticeController extends Controller{
             'articles' => $articles,
             'stocks' => $stocks,
             'stacks' => $stacks,
-            'shelvings' => $shelvings
+            'shelvings' => $shelvings,
+            'units' => $units
         ]);
     }
 }

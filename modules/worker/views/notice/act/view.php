@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="box-header">
                     Продукция
                 </div>
-                <div class="box-body">
+                <div class="box-body" style="overflow-x: scroll;">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
@@ -142,11 +142,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                             ],
                             [
-                                'attribute'=>'amount',
+                                'attribute'=>'unit_id',
+                                'label'=>'<i class="fa fa-sort"></i> Ед. измерения',
+                                'encodeLabel' => false,
+                                'format' => 'html',
+                                'value' => function ($model, $key, $index, $column) {
+                                    return $model->unit ? $model->unit->name_ru : '-';
+                                },
+                            ],
+                            [
+                                'attribute'=>'amount_passed',
                                 'label'=>'<i class="fa fa-sort"></i>  Кол-во',
                                 'encodeLabel' => false,
                                 'value' => function ($model, $key, $index, $column) {
-                                    return $model->amount ? $model->amount : '0';
+                                    if ($model->amount_passed) {
+                                        return $model->amount_passed ? $model->amount_passed : '0';
+                                    } else {
+                                        return $model->amount ? $model->amount : '0';
+                                    }
                                 },
                             ],
                         ],

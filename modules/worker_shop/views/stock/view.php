@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
 
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -35,9 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <span class="fa fa-cog"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-left">
-                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/create']);?>" class="dropdown-item">Добавить склад</a></li>
-                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/create', 'id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
-                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/stock/remove', 'id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/create']);?>" class="dropdown-item">Добавить склад</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/create', 'id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
+                                    <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/stock/remove', 'id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
                                 </ul>
                             </div>
                         </div>

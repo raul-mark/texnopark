@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/admin/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php }?>
         <div class="box box-info color-palette-box">
             
-            <div class="box-body" id="item-block">
+            <div class="box-body" id="item-block" style="overflow-x: scroll;">
                 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     <span class="fa fa-cog"></span>
                                                 </button>
                                                 <ul class="dropdown-menu pull-right">
-                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/admin/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
+                                                    <li><a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/product/view', 'id'=>$model->id]).'" class="dropdown-item">Посмотреть</a></li>
                                                 </ul>';
                                     }
                                 ],

@@ -17,6 +17,8 @@ class m210704_100238_notice_act_product extends Migration
             'notice_act_id' => $this->integer(),
             'product_id' => $this->integer(),
             'amount' => $this->double(),
+            'percentage' => $this->double(),
+            'amount_passed' => $this->double(),
             'description' => $this->text(),
             'date' => $this->timestamp(),
             'sort' => $this->integer()->notNull()->defaultValue(0),

@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-sm-9">
                 <?php if ($model) {?>
-                    <div class="box">
+                    <div class="box box-info color-palette-box">
                         <div class="box-header">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <br/>
                         </div>
                     </div>
-                    <div class="box">
+                    <div class="box box-info color-palette-box">
                         <div class="box-header">
                             Описание
                         </div>

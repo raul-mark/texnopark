@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?=$this->title;?></h1>
         
         <ol class="breadcrumb">
-            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
+            <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/'])?>"><i class="fa fa-dashboard"></i> Главная</a></li>
             <li class="active"><?=$this->title;?></li>
         </ol>
     </section>
@@ -41,18 +41,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="box">
                         <div class="box-header">
                             <?php if ($model->status == 1) {?>
-                                <a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/set-defect', 'id'=>$model->id]);?>" class="btn btn-danger">Переместить в дефект</a>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/set-defect', 'id'=>$model->id]);?>" class="btn btn-danger">Переместить в дефект</a>
                             <?php }?>
                             <?php if ($model->status == 2) {?>
-                                <a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/unset-defect', 'id'=>$model->id]);?>" class="btn btn-success">Вытащить из дефекта</a>
+                                <a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/unset-defect', 'id'=>$model->id]);?>" class="btn btn-success">Вытащить из дефекта</a>
                             <?php }?>
                                 <!-- <div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                 <span class="fa fa-cog"></span>
                             </button>
                             <ul class="dropdown-menu pull-right">
-                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/create']);?>" class="dropdown-item">Добавить товар</a></li>
-                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/create', 'id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
-                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker/product/remove', 'id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
+                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/create']);?>" class="dropdown-item">Добавить товар</a></li>
+                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/create', 'id'=>$model->id]);?>" class="dropdown-item">Редактировать</a></li>
+                                <li><a href="<?=Yii::$app->urlManager->createUrl(['/worker_shop/product/remove', 'id'=>$model->id]);?>" class="dropdown-item" class="remove-object">Удалить</a></li>
                             </ul> -->
                         </div>
                         <div class="box-body">
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </tr>
                                 <tr>
                                     <td>Ряд:</td>
-                                    <td><?=$model->stock ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker/stock/view', 'id'=>$model->stock_id]).'">'.$model->stock->name_ru.'</a>' : '-';?></td>
+                                    <td><?=$model->stock ? '<a href="'.Yii::$app->urlManager->createUrl(['/worker_shop/stock/view', 'id'=>$model->stock_id]).'">'.$model->stock->name_ru.'</a>' : '-';?></td>
                                 </tr>
                                 <tr>
                                     <td>Этаж:</td>

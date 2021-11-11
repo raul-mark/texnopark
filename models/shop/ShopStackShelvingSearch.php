@@ -19,7 +19,7 @@ class ShopStackShelvingSearch extends ShopStackShelving
     {
         return [
             [['id', 'shop_stack_id', 'status', 'sort'], 'integer'],
-            [['row', 'cell', 'date', 'ip'], 'safe'],
+            [['shelf_number', 'date', 'ip'], 'safe'],
         ];
     }
 
@@ -66,8 +66,7 @@ class ShopStackShelvingSearch extends ShopStackShelving
             'date' => $this->date,
         ]);
 
-        $query->andFilterWhere(['like', 'row', $this->row])
-            ->andFilterWhere(['like', 'cell', $this->cell])
+        $query->andFilterWhere(['like', 'shelf_number', $this->shelf_number])
             ->andFilterWhere(['like', 'ip', $this->ip]);
 
         return $dataProvider;
